@@ -37,6 +37,9 @@ CFLAGS += $(COPTS)
 # Add rules to build each program.
 #
 
+realall: progall
+progall: .PHONY
+
 .for p in $(PROGS)
 CLEANFILES := $(CLEANFILES) $p
 
@@ -98,7 +101,7 @@ $p: $(_OBJS.$p)
 		$(LDADD.$p)
 .endif
 
-realall: $p
+progall: $p
 
 .endfor
 
