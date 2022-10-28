@@ -45,7 +45,7 @@ PROGNAME.$p ?= $p
 
 BINDIR.$p ?= $(BINDIR)
 
-# Loop through SRCS to build objects.
+# Loop through SRCS to figure out the object files.
 # s -> src
 # o -> object (.o suffix)
 _OBJS.$p =
@@ -53,15 +53,34 @@ _OBJS.$p =
 .    if $(s:M*.h)
 .      error "no headers allowed in SRCS"
 .    endif
+
+# A prog depends on the source file indirectly through the `.o';
+# do a sanity check that the source actually exists.
+.    if !exists($s)
+.      error source file does not exist: $s
+.    endif
+
 o := $(s:R:S/$/.o/)
 CLEANFILES := $(CLEANFILES) $o
 _OBJS.$p := $(_OBJS.$p) $o
 .  endfor
 
+# Figure out if we should link with CXX, based on source suffixes.
+_CXX = 0
+.  if $(MKCXX:Uyes) != no
+.    for x in $(CXX_SUFFIXES)
+.      if !empty(SRCS.$p:M*$x)
+_CXX = 1
+.        break
+.      endif
+.    endfor
+.  endif
+
 # Final linking.
 # LDSTATIC can be overridden per-program.
 # LDFLAGS and LDADD can be appended to per-program.
 $p: $(_OBJS.$p)
+.if $(_CXX) == 0
 	$(CC) \
 		$(LDSTATIC.$p:U$(LDSTATIC)) \
 		$(LDFLAGS) \
@@ -69,6 +88,15 @@ $p: $(_OBJS.$p)
 		-o $(.TARGET) $(.ALLSRC) \
 		$(LDADD) \
 		$(LDADD.$p)
+.else
+	$(CXX) \
+		$(LDSTATIC.$p:U$(LDSTATIC)) \
+		$(LDFLAGS) \
+		$(LDFLAGS.$p) \
+		-o $(.TARGET) $(.ALLSRC) \
+		$(LDADD) \
+		$(LDADD.$p)
+.endif
 
 realall: $p
 
