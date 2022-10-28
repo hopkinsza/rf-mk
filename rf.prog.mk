@@ -59,12 +59,16 @@ _OBJS.$p := $(_OBJS.$p) $o
 .  endfor
 
 # Final linking.
-# PROGNAME, LDSTATIC, LDFLAGS, and LDADD can be overidden per-program.
+# LDSTATIC can be overridden per-program.
+# LDFLAGS and LDADD can be appended to per-program.
 $p: $(_OBJS.$p)
-	$(CC) $(LDSTATIC.$p:U$(LDSTATIC)) \
-		$(LDFLAGS.$p:U$(LDFLAGS)) \
+	$(CC) \
+		$(LDSTATIC.$p:U$(LDSTATIC)) \
+		$(LDFLAGS) \
+		$(LDFLAGS.$p) \
 		-o $(.TARGET) $(.ALLSRC) \
-		$(LDADD.$p:U$(LDADD))
+		$(LDADD) \
+		$(LDADD.$p)
 
 realall: $p
 
@@ -80,6 +84,7 @@ proginstall: .PHONY
 .for f in $(PROGS)
 
 _DIR :=  $(BINDIR.$f:U$(BINDIR))
+# PROGNAME.prog > PROGNAME > default
 _NAME := $(PROGNAME.$f:U$(PROGNAME:U$(f)))
 _PATH := $(DESTDIR)$(_DIR)/$(_NAME)
 
