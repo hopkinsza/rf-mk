@@ -25,7 +25,7 @@ CFLAGS_PROF ?= -pg
 # Implicit rules.
 #
 
-CXX_SUFFIXES ?= .cc .cpp .cxx .C
+CXX_SUFFIXES ?= .cc .cpp .cxx
 .SUFFIXES:
 .SUFFIXES: .c $(CXX_SUFFIXES) .o .pico .po
 
