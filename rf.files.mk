@@ -29,6 +29,13 @@ _PATH := $(DESTDIR)$(_DIR)/$(_NAME)
 filesinstall: $(_PATH)
 .PRECIOUS: $(_PATH)
 
-$(_PATH): $f __fileinstall
+# Files can be in a subdir.
+# You can use a slash in a variable name like FILESOWN.files/file=root.
+$(_PATH): $f
+	$(INSTALL_FILE) \
+		-o $(FILESOWN.$(.ALLSRC):U$(FILESOWN)) \
+		-g $(FILESGRP.$(.ALLSRC):U$(FILESGRP)) \
+		-m $(FILESMODE.$(.ALLSRC):U$(FILESMODE)) \
+		$(.ALLSRC) $(.TARGET)
 
 .endfor

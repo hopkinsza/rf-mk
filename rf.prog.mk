@@ -123,6 +123,11 @@ proginstall: $(_PATH)
 .PRECIOUS: $(_PATH)
 
 $(_PATH): $f __proginstall
+	$(INSTALL_FILE) \
+		-o $(BINOWN.$(.ALLSRC):U$(BINOWN)) \
+		-g $(BINGRP.$(.ALLSRC):U$(BINGRP)) \
+		-m $(BINMODE.$(.ALLSRC):U$(BINMODE)) \
+		$(.ALLSRC) $(.TARGET)
 
 .endfor
 
