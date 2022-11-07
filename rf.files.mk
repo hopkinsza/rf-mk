@@ -6,21 +6,39 @@ FILESMODE ?= $(NONBINMODE)
 
 FILESDIR ?= $(BINDIR)
 
+FILESBUILD ?= no
+
 #
-# Hook into realinstall from <rf.targ.mk>.
+# Hook into targets from <rf.targ.mk>.
 #
-# TODO: add `realall: files-build' later
-# maybe configfiles
-# might change back to filesinstall
+# TODO: configs
+
+realall: filesall
+filesall: .PHONY
 
 realinstall: filesinstall
 filesinstall: .PHONY
 
 #
-# file installations
+# Build.
 #
 
-.for f in $(FILES:O:u)
+.for f in $(FILES)
+
+b := $(FILESBUILD.$f:U$(FILESBUILD))
+
+.  if $b != no
+filesall: $f
+CLEANFILES := $(CLEANFILES) $f
+.  endif
+
+.endfor
+
+#
+# Installation.
+#
+
+.for f in $(FILES)
 
 _DIR := $(FILESDIR.$f:U$(FILESDIR))
 _NAME := $(FILESNAME.$f:U$(FILESNAME:U$(f:T)))
