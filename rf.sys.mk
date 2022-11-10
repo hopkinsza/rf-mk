@@ -32,45 +32,45 @@ CXX_SUFFIXES ?= .cc .cpp .cxx
 .c.o:
 	$(CC) -c \
 		$(CFLAGS) $(CPPFLAGS) \
-		$(CFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 
 .c.pico:
 	$(CC) -c $(CFLAGS_PIC) \
 		$(CFLAGS) $(CPPFLAGS) \
-		$(CFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 
 .c.po:
 	$(CC) -c $(CFLAGS_PROF) \
 		$(CFLAGS) $(CPPFLAGS) \
-		$(CFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 
 .for i in $(CXX_SUFFIXES)
 $i.o:
 	$(CXX) -c \
 		$(CXXFLAGS) $(CPPFLAGS) \
-		$(CXXFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CXXFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 
 $i.pico:
 	$(CXX) -c $(CFLAGS_PIC) \
 		$(CXXFLAGS) $(CPPFLAGS) \
-		$(CXXFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CXXFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 
 $i.po:
 	$(CXX) -c $(CFLAGS_PROF) \
 		$(CXXFLAGS) $(CPPFLAGS) \
-		$(CXXFLAGS.$(.ALLSRC:R)) \
-		$(CPPFLAGS.$(.ALLSRC:R)) \
-		-o $(.TARGET) $(.ALLSRC)
+		$(CXXFLAGS.$(.IMPSRC:R)) \
+		$(CPPFLAGS.$(.IMPSRC:R)) \
+		-o $(.TARGET) $(.IMPSRC)
 .endfor
 
 .endif # _RF_SYS_MK_
