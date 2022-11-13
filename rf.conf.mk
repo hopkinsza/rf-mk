@@ -5,7 +5,7 @@
 .if !defined(_RF_CONF_MK_)
 _RF_CONF_MK_ = 1
 
-RFCONF.auto ?= no
+RFCONF.autodep ?= no
 
 .if !empty(RFCONF.h)
 
@@ -39,7 +39,7 @@ CLEANFILES := $(CLEANFILES) $(RFCONF.h)
 # if you don't want to specify manually.
 #
 
-.if $(RFCONF.h.auto:U$(RFCONF.auto)) == yes
+.if $(RFCONF.h.autodep:U$(RFCONF.autodep)) == yes
 .  for o in $(SRCS:.c=.o)
 $o: $(RFCONF.h)
 .  endfor
