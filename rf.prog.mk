@@ -37,7 +37,7 @@ CFLAGS += $(COPTS)
 # Add rules to build each program.
 #
 
-realall: progall
+all: progall
 progall: .PHONY
 
 .for p in $(PROGS)
@@ -109,7 +109,7 @@ progall: $p
 # Installation.
 #
 
-realinstall: proginstall
+install: proginstall
 proginstall: .PHONY
 
 .for f in $(PROGS)

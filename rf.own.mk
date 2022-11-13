@@ -7,10 +7,38 @@
 _RF_OWN_MK_ = 1
 
 #
+# Ensure existence of default targets.
+#
+
+# TODO: tags
+TARGETS = all \
+	  clean cleandir \
+	  conf \
+	  install
+
+.for t in $(TARGETS)
+$t: .PHONY
+.endfor
+
+cleandir: clean
+
+# If no targets given on command line, default to all.
+.MAIN: all
+
+#
 # Directories.
 #
 
 PREFIX ?= /usr/local
+PREFIXDIRS = BINDIR \
+	ETCDIR \
+	INCDIR \
+	LIBDIR \
+	SHAREDIR \
+	VARDIR \
+	DOCDIR \
+	MANDIR \
+	RUNDIR
 
 # BIN, INC, LIB, and MAN are traditional.
 BINDIR ?=	$(PREFIX)/bin
@@ -23,34 +51,6 @@ VARDIR ?=	$(PREFIX)/var
 DOCDIR ?=	$(SHAREDIR)/doc
 MANDIR ?=	$(SHAREDIR)/man
 RUNDIR ?=	$(VARDIR)/run
-
-.if !empty(RF.cconf)
-# XXX: maybe a better way to do this with a .for loop.
-# Need to keep this sync'd with the variables above for now.
-# Also, you need to remove the file (or make clean) to get new values.
-$(RF.cconf):
-	@echo 'create $(.TARGET)'
-	@exec >$(.TARGET); \
-		echo '#ifndef _RF_CONF_H_'; \
-		echo '#define _RF_CONF_H_'; \
-		echo ''; \
-		echo '#define BINDIR	"$(BINDIR)"'; \
-		echo '#define ETCDIR	"$(ETCDIR)"'; \
-		echo '#define INCDIR	"$(INCDIR)"'; \
-		echo '#define LIBDIR	"$(LIBDIR)"'; \
-		echo '#define SHAREDIR	"$(SHAREDIR) "'; \
-		echo '#define VARDIR	"$(VARDIR)"'; \
-		echo '#define DOCDIR	"$(DOCDIR)"'; \
-		echo '#define MANDIR	"$(MANDIR)"'; \
-		echo '#define RUNDIR	"$(RUNDIR)"'; \
-		echo ''; \
-		echo '#endif // _RF_CONF_H_'; \
-
-CLEANFILES := $(CLEANFILES) $(RF.cconf)
-
-realall: $(RF.cconf)
-.ORDER: $(RF.cconf) realall
-.endif
 
 #
 # Default permissions.

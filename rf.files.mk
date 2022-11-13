@@ -13,10 +13,10 @@ FILESBUILD ?= no
 #
 # TODO: configs
 
-realall: filesall
+all: filesall
 filesall: .PHONY
 
-realinstall: filesinstall
+install: filesinstall
 filesinstall: .PHONY
 
 #

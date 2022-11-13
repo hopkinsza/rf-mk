@@ -1,9 +1,9 @@
 .if !defined(_RF_CLEAN_MK_)
 
-realclean:
+clean:
 	rm -f $(CLEANFILES)
 
-realcleandir:
+cleandir:
 	rm -f $(CLEANDIRFILES)
 
 .endif # _RF_CLEAN_MK_

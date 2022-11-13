@@ -32,6 +32,6 @@ SUBDIR.$t += $d,$t
 .  endfor
 
 # notably skip the creation of intermediate `subdir-$(targ)' target
-real$t: .PHONY $(SUBDIR.$t)
+$t: .PHONY $(SUBDIR.$t)
 
 .endfor

@@ -47,7 +47,7 @@ CFLAGS += $(COPTS)
 # Add rules to create libraries.
 #
 
-realall: liball
+all: liball
 liball: .PHONY
 
 .if !defined(LIB)
