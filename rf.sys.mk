@@ -6,14 +6,6 @@
 _RF_SYS_MK_ = 1
 
 #
-# MK* options.
-#
-
-.if $(MKDEBUG:Uno) != "no"
-CFLAGS += -g
-.endif
-
-#
 # Variables.
 #
 
