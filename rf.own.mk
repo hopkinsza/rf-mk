@@ -7,6 +7,12 @@
 _RF_OWN_MK_ = 1
 
 #
+# Global flags.
+#
+
+RF.update ?= no
+
+#
 # Ensure existence of default targets.
 #
 
@@ -26,7 +32,7 @@ cleandir: clean
 .MAIN: all
 
 #
-# Directories.
+# Configuration variables to be passed to the build.
 #
 
 PREFIX ?= /usr/local
@@ -101,7 +107,7 @@ MAKEDIRTARGET = \
 #
 
 INSTALL_DIR ?=		$(INSTALL) -m $(DIRMODE) -d
-.if "$(MKUPDATE)" == no
+.if $(RF.update) == no
 INSTALL_FILE ?=		$(INSTALL) -c
 .else
 INSTALL_FILE ?=		$(INSTALL) -c -p
