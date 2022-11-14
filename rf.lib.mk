@@ -112,26 +112,26 @@ _LOBJS_PIC	= $(_OBJS_PIC)
 .endif
 
 lib$(LIB).a: $(_OBJS)
-	@$(RFPRINT) building standard $(LIB) library
+	@$(RFPRINT) build standard $(LIB) library
 	@rm -f $(.TARGET)
 	$(AR) crD $(.TARGET) $(_LOBJS)
 	$(RANLIB) $(.TARGET)
 
 lib$(LIB)_p.a: $(_OBJS_PROF)
-	@$(RFPRINT) building profiled $(LIB) library
+	@$(RFPRINT) build profiled $(LIB) library
 	@rm -f $(.TARGET)
 	$(AR) crD $(.TARGET) $(_LOBJS_PROF)
 	$(RANLIB) $(.TARGET)
 
 lib$(LIB)_pic.a: $(_OBJS_PIC)
-	@$(RFPRINT) building PIC $(LIB) library
+	@$(RFPRINT) build PIC $(LIB) library
 	@rm -f $(.TARGET)
 	$(AR) crD $(.TARGET) $(_LOBJS_PIC)
 	$(RANLIB) $(.TARGET)
 
 # LDADD?
 lib$(LIB).so.$(SHLIB_FULLVERSION): $(_OBJS_PIC)
-	@$(RFPRINT) building shared $(LIB) library
+	@$(RFPRINT) build shared $(LIB) library
 	@rm -f $(.TARGET)
 	$(CC) -shared -Wl,-soname,lib$(LIB).so.$(SHLIB_SOVERSION) \
 		$(CFLAGS_PIC) \
