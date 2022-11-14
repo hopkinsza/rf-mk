@@ -12,12 +12,12 @@ _RF_INIT_MK = 1
 MAKECONF ?= /etc/rf-mk.conf
 .-include "$(MAKECONF)"
 
-.include <rf.sys.mk>
-.include <rf.targ.mk>
+.include <rfi.sys.mk>
+.include <rfi.targ.mk>
 
-.include <rf.own.mk>
+.include <rfi.own.mk>
 
-.include <rf.clean.mk>
-.include <rf.conf.mk>
+.include <rfi.clean.mk>
+.include <rfi.conf.mk>
 
 .endif # _RF_INIT_MK_
