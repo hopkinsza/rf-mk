@@ -12,23 +12,11 @@ TARGETS += all \
 
 .for t in $(TARGETS)
 $t: .PHONY
-.  for i in before$t real$t after$t
-$i: .PHONY
-.  endfor
-$t: before$t real$t after$t
-.ORDER: before$t real$t after$t
 .endfor
 
-#
-# cleandir depends on clean.
-#
+cleandir: clean
 
-beforecleandir: clean
-
-#
-# If no targets given on command line, default to all.
-#
-
+# if no targets given on command line, default to all
 .MAIN: all
 
 .endif # _RF_TARG_MK_

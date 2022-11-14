@@ -13,25 +13,6 @@ _RF_OWN_MK_ = 1
 RF.update ?= no
 
 #
-# Ensure existence of default targets.
-#
-
-# TODO: tags
-TARGETS = all \
-	  clean cleandir \
-	  conf \
-	  install
-
-.for t in $(TARGETS)
-$t: .PHONY
-.endfor
-
-cleandir: clean
-
-# If no targets given on command line, default to all.
-.MAIN: all
-
-#
 # Configuration variables to be passed to the build.
 #
 

@@ -140,5 +140,3 @@ lib$(LIB).so.$(SHLIB_FULLVERSION): $(_OBJS_PIC)
 # hook into all
 #liball: lib$(LIB).a lib$(LIB)_p.a
 liball: $(_LIBS)
-
-.include <rf.clean.mk>

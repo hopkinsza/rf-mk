@@ -130,5 +130,3 @@ $(_PATH): $f __proginstall
 		$(.ALLSRC) $(.TARGET)
 
 .endfor
-
-.include <rf.clean.mk>
