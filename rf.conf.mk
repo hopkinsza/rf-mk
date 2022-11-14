@@ -29,7 +29,7 @@ RFCONF.h.cmd += echo ''; \
 #
 
 $(RFCONF.h):
-	@echo 'create $(.TARGET)'
+	@$(RFPRINT) 'create $(.TARGET)'
 	@exec >$(.TARGET); $(RFCONF.h.cmd)
 
 CLEANFILES := $(CLEANFILES) $(RFCONF.h)

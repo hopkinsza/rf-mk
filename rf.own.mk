@@ -13,6 +13,27 @@ _RF_OWN_MK_ = 1
 RF.update ?= no
 
 #
+# Output.
+#
+
+RF.verbose ?= 2
+
+.if $(RF.verbose) == 0
+RFPRINT = :
+.MAKEFLAGS: -s
+.elif $(RF.verbose) == 1
+.MAKEFLAGS: -s
+.elif $(RF.verbose) == 2
+# everything normal
+.elif $(RF.verbose) == 3
+.MAKEFLAGS: -dl
+.elif $(RF.verbose) == 4
+.MAKEFLAGS: -dl -dx
+.endif
+
+RFPRINT ?= echo '\# '
+
+#
 # Configuration variables to be passed to the build.
 #
 
