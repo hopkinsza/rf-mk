@@ -5,7 +5,12 @@
 .if !defined(_RF_CONF_MK_)
 _RF_CONF_MK_ = 1
 
+# Try to automatically make files depend on the generated configs.
 RFCONF.autodep ?= no
+
+# What variables to pass to the generated configs.
+# By default, pass PREFIX and related variables.
+RFCONF.vars ?= $(PREFIXDIRS)
 
 .if !empty(RFCONF.h)
 
@@ -17,7 +22,7 @@ RFCONF.h.cmd = echo '\#ifndef _RF_CONF_H_'; \
 	echo '\#define _RF_CONF_H_'; \
 	echo '';
 
-.for i in $(PREFIXDIRS)
+.for i in $(RFCONF.vars)
 RFCONF.h.cmd += echo '\#define $i "$($i)"';
 .endfor
 
