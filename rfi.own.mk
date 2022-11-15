@@ -33,32 +33,86 @@ RFPRINT = :
 
 RFPRINT ?= echo '\# '
 
-#
-# Configuration variables to be passed to the build.
-#
+####
+#### PREFIX and related variables.
+####
+
+.if empty(PKG)
+.error PKG must be defined
+.endif
 
 PREFIX ?= /usr/local
-PREFIXDIRS = BINDIR \
-	ETCDIR \
+PREFIXDIRS = PREFIX
+
+#
+# The three base directories to install to.
+# LOCALBASE: static data/files
+# ETCBASE: configuration files
+# VARBASE: dynamic (variables) data/files
+#
+
+PREFIXDIRS += LOCALBASE \
+	ETCBASE \
+	VARBASE
+
+LOCALBASE ?=	$(PREFIX)
+ETCBASE ?=	$(PREFIX)/etc
+VARBASE ?=	$(PREFIX)/var
+
+#
+# LOCALBASE traditional directories.
+#
+
+PREFIXDIRS += BINDIR \
 	INCDIR \
 	LIBDIR \
-	SHAREDIR \
-	VARDIR \
-	DOCDIR \
-	MANDIR \
-	RUNDIR
+	MANDIR
 
-# BIN, INC, LIB, and MAN are traditional.
-BINDIR ?=	$(PREFIX)/bin
-ETCDIR ?=	$(PREFIX)/etc
-INCDIR ?=	$(PREFIX)/include
-LIBDIR ?=	$(PREFIX)/lib
-SHAREDIR ?=	$(PREFIX)/share
-VARDIR ?=	$(PREFIX)/var
+BINDIR ?=	$(LOCALBASE)/bin
+INCDIR ?=	$(LOCALBASE)/include
+LIBDIR ?=	$(LOCALBASE)/lib
+MANDIR ?=	$(LOCALBASE)/share/man
 
-DOCDIR ?=	$(SHAREDIR)/doc
-MANDIR ?=	$(SHAREDIR)/man
-RUNDIR ?=	$(VARDIR)/run
+#
+# LOCALBASE additional directories.
+#
+# DOCDIR: misc documentation
+# EXAMPLESDIR: usage examples
+# LIBDATADIR: ?
+# SHAREDIR: generic static data
+# TODO: libdata vs share?
+#
+
+PREFIXDIRS += DOCDIR \
+	EXAMPLESDIR \
+	LIBDATADIR \
+	SHAREDIR
+
+DOCDIR ?=	$(LOCALBASE)/share/doc/$(PKG)
+EXAMPLESDIR ?=	$(LOCALBASE)/share/examples/$(PKG)
+LIBDATADIR ?=	$(LOCALBASE)/libdata/$(PKG)
+SHAREDIR ?=	$(LOCALBASE)/share/$(PKG)
+
+#
+# ETCBASE - one configuration file directory.
+# Set it to $(ETCBASE)/$(PKG) if there are many config files.
+#
+
+PREFIXDIRS += ETCDIR
+
+ETCDIR ?=	$(ETCBASE)
+
+#
+# VARBASE - for variable runtime data.
+#
+
+PREFIXDIRS += CACHEDIR \
+	DBDIR \
+	SPOOLDIR
+
+CACHEDIR ?=	$(VARBASE)/cache/$(PKG)
+DBDIR ?=	$(VARBASE)/db/$(PKG)
+SPOOLDIR ?=	$(VARBASE)/spool/$(PKG)
 
 #
 # Default permissions.
