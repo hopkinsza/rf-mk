@@ -18,6 +18,6 @@ MAKECONF ?= /etc/rf-mk.conf
 .include <rfi.own.mk>
 
 .include <rfi.clean.mk>
-.include <rfi.bconf.mk>
+.include <rfi.conf.mk>
 
 .endif # _RF_INIT_MK_
