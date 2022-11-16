@@ -11,7 +11,6 @@ FILESBUILD ?= no
 #
 # Hook into targets from <rf.targ.mk>.
 #
-# TODO: configs
 
 all: filesall
 filesall: .PHONY
