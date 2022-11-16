@@ -162,6 +162,8 @@ MAKEDIRTARGET = \
 # INSTALL helpers.
 #
 
+INSTALL ?= install
+
 INSTALL_DIR ?=		$(INSTALL) -m $(DIRMODE) -d
 .if $(RF.update) == no
 INSTALL_FILE ?=		$(INSTALL) -c
