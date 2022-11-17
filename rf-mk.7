@@ -10,9 +10,77 @@
 .\"
 .\"
 .Sh DESCRIPTION
-There are multiple files that each do something.
-.Ss rf.init.mk
-Basic initialization tasks.
+There are many files that each do something.
+.\"
+.\"
+.Sh rf.init.mk
+This file is included from most other files that build or do something.
+It includes the files
+.Pa Makefile.local ,
+.Pa ../Makefile.inc ,
+and $(MAKECONF) \(em typically
+.Pa /etc/rf-mk.conf .
+.Pp
+Then, it includes a few other files that are mostly separated
+for organizational purposes.
+.Pp
+They are:
+.Ss rf.own.mk
+Sets default values for globally useful variables and flags,
+and defines some useful shell functions.
+.Pp
+The following variables are available:
+.Bl -tag -width Ds -offset 3n
+.It RF.update
+blah
+.It RF.verbose
+Controls output verbosity.
+.Bl -tag -width 2n -compact
+.It 0:
+Minimal output.
+.It 1:
+Describe what is occurring with $(RFPRINT).
+.It 2:
+Normal output.
+.It 3:
+Ignore the effect of the
+.Dq @
+prefix in make commands,
+as if
+.Xr make 1
+was invoked with
+.Fl dl .
+.It 4:
+Trace shell commands with the shell's
+.Fl x
+flag,
+as if
+.Xr make 1
+was invoked with
+.Fl dx .
+.El
+.It PREFIX
+blah
+.El
+.Ss rf.sys.mk
+Defines suffix rules that are used by multiple files.
+.Ss rf.targ.mk
+Ensures existence of the default targets.
+.\"
+.\"
+.Sh rf.clean.mk
+Cleans up generated files.
+.Ss Targets
+.Bl -tag -width Ds
+.It clean
+Remove $(CLEANFILES).
+.It cleandir
+Remove $(CLEANDIRFILES).
+.El
+.\"
+.\"
+.Sh rf.conf.mk
+Handles build-time configuration generation.
 .\"
 .\"
 .Sh FILES
