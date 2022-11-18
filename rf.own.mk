@@ -37,8 +37,15 @@ RFPRINT ?= echo '\# '
 #### PREFIX and related variables.
 ####
 
-.if empty(PKG)
-.error PKG must be defined
+.if !defined(PKG)
+.  if defined(PROG)
+PKG ?= $(PROG)
+.  endif
+.  if defined(LIB)
+PKG ?= $(LIB)
+.  endif
+PKG ?= foo
+.info PKG is not defined, defaulting to $(PKG)
 .endif
 
 PREFIX ?= /usr/local
