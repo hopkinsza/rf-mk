@@ -68,6 +68,12 @@ Defines suffix rules that are used by multiple files.
 Ensures existence of the default targets.
 .\"
 .\"
+.Sh rf.all.mk
+Include all
+.In rf.*.mk
+files except those that would cause conflicts with each other.
+.\"
+.\"
 .Sh rf.clean.mk
 Cleans up generated files.
 .Ss Targets
