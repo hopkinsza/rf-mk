@@ -7,7 +7,7 @@
 # Does not currently look for $(dir).$(MACHINE).
 #
 
-.include <rf.init.mk>
+.include <rf/init.mk>
 
 #
 # Generate appropriate targets for descending into subdirs.

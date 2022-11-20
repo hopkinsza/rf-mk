@@ -1,4 +1,4 @@
-.include <rf.init.mk>
+.include <rf/init.mk>
 
 FILESOWN ?= $(BINOWN)
 FILESGRP ?= $(BINGRP)
@@ -9,7 +9,7 @@ FILESDIR ?= $(BINDIR)
 FILESBUILD ?= no
 
 #
-# Hook into targets from <rf.targ.mk>.
+# Hook into targets from <rf/init/targ.mk>.
 #
 
 all: filesall

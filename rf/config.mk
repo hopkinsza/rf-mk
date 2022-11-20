@@ -1,4 +1,4 @@
-.include <rf.init.mk>
+.include <rf/init.mk>
 
 CONFIGOWN ?= $(BINOWN)
 CONFIGGRP ?= $(BINGRP)
@@ -12,7 +12,7 @@ RFCONFIG.examplesdir ?= $(EXAMPLESDIR)
 RFCONFIG.etcdir ?= $(ETCDIR)
 
 #
-# Hook into targets from <rf.targ.mk>.
+# Hook into targets from <rf/init/targ.mk>.
 #
 
 all: configall

@@ -1,4 +1,4 @@
-.include <rf.init.mk>
+.include <rf/init.mk>
 
 RFLIB.static ?=	yes
 RFLIB.prof ?=	yes

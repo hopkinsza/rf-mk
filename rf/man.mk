@@ -1,4 +1,4 @@
-.include <rf.init.mk>
+.include <rf/init.mk>
 
 MANOWN ?= $(BINOWN)
 MANGRP ?= $(BINGRP)

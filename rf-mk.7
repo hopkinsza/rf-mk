@@ -13,7 +13,7 @@
 There are many files that each do something.
 .\"
 .\"
-.Sh rf.init.mk
+.Sh rf/init.mk
 This file is included from most other files that build or do something.
 It includes the files
 .Pa Makefile.local ,
@@ -25,7 +25,7 @@ Then, it includes a few other files that are mostly separated
 for organizational purposes.
 .Pp
 They are:
-.Ss rf.own.mk
+.Ss rf/own.mk
 Sets default values for globally useful variables and flags,
 and defines some useful shell functions.
 .Pp
@@ -62,19 +62,19 @@ was invoked with
 .It PREFIX
 blah
 .El
-.Ss rf.sys.mk
+.Ss rf/sys.mk
 Defines suffix rules that are used by multiple files.
-.Ss rf.targ.mk
+.Ss rf/targ.mk
 Ensures existence of the default targets.
 .\"
 .\"
-.Sh rf.all.mk
+.Sh rf/all.mk
 Include all
-.In rf.*.mk
+.In rf/*.mk
 files except those that would cause conflicts with each other.
 .\"
 .\"
-.Sh rf.clean.mk
+.Sh rf/clean.mk
 Cleans up generated files.
 .Ss Targets
 .Bl -tag -width Ds
@@ -85,7 +85,7 @@ Remove $(CLEANDIRFILES).
 .El
 .\"
 .\"
-.Sh rf.conf.mk
+.Sh rf/conf.mk
 Handles build-time configuration generation.
 .\"
 .\"
