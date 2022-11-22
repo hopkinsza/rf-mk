@@ -4,7 +4,7 @@
 #
 
 .if !defined(_RF_INIT_MK_)
-_RF_INIT_MK = 1
+_RF_INIT_MK_ = 1
 
 .-include "$(.CURDIR)/Makefile.local"
 .-include "$(.CURDIR)/../Makefile.inc"
