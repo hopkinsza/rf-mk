@@ -122,7 +122,7 @@ _PATH := $(DESTDIR)$(_DIR)/$(_NAME)
 proginstall: $(_PATH)
 .PRECIOUS: $(_PATH)
 
-$(_PATH): $f __proginstall
+$(_PATH): $f
 	$(INSTALL_FILE) \
 		-o $(BINOWN.$(.ALLSRC):U$(BINOWN)) \
 		-g $(BINGRP.$(.ALLSRC):U$(BINGRP)) \
