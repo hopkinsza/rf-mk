@@ -3,7 +3,7 @@
 #
 
 .if !defined(_RF_ALL_MK_)
-_RF_ALL_MK = 1
+_RF_ALL_MK_ = 1
 
 .include <rf/init.mk>
 
