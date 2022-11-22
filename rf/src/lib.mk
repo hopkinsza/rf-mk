@@ -1,9 +1,30 @@
 .include <rf/init.mk>
 
+#
+# Flags and options.
+#
+# TODO: LIBISPRIVATE
+# TODO: maybe CXX support
+
+LIBOWN ?=	$(BINOWN)
+LIBGRP ?=	$(BINGRP)
+LIBMODE ?=	$(BINMODE)
+
+# LIBDIR is already defined by own.mk.
+
+CFLAGS += $(COPTS)
+
+# types of library
 RFLIB.static ?=	yes
 RFLIB.prof ?=	yes
 RFLIB.pic ?=	yes
 RFLIB.shared ?=	yes
+
+# where to install
+RFLIB.staticdir ?=	$(LIBDIR)
+RFLIB.profdir ?=	$(LIBDIR)
+RFLIB.picdir ?=		$(LIBDIR)
+RFLIB.shareddir ?=	$(LIBDIR)
 
 #
 # Shared library version.
@@ -32,16 +53,6 @@ SHLIB_FULLVERSION := $(SHLIB_FULLVERSION).$(SHLIB_TEENY)
 
 # version number to be compiled into shared library via -soname
 SHLIB_SOVERSION = $(SHLIB_MAJOR)
-
-#
-# Flags and options.
-#
-
-# TODO: LIBISPRIVATE
-# TODO: maybe CXX support
-
-# for historical reasons
-CFLAGS += $(COPTS)
 
 #
 # Add rules to create libraries.
@@ -140,3 +151,65 @@ lib$(LIB).so.$(SHLIB_FULLVERSION): $(_OBJS_PIC)
 # hook into all
 #liball: lib$(LIB).a lib$(LIB)_p.a
 liball: $(_LIBS)
+
+#
+# Install.
+#
+
+install: libinstall
+libinstall: .PHONY
+
+__libinstall: .USE
+	$(INSTALL_FILE) \
+		-o $(LIBOWN) \
+		-g $(LIBGRP) \
+		-m $(LIBMODE) \
+		$(.ALLSRC) $(.TARGET)
+
+#
+# static
+#
+.if $(RFLIB.static) != no
+_PATH := $(DESTDIR)$(RFLIB.staticdir)/lib$(LIB).a
+
+libinstall: $(_PATH)
+.PRECIOUS: $(_PATH)
+
+$(_PATH): __libinstall lib$(LIB).a
+.endif
+
+#
+# prof
+#
+.if $(RFLIB.prof) != no
+_PATH := $(DESTDIR)$(RFLIB.profdir)/lib$(LIB)_p.a
+
+libinstall: $(_PATH)
+.PRECIOUS: $(_PATH)
+
+$(_PATH): __libinstall lib$(LIB)_p.a
+.endif
+
+#
+# pic
+#
+.if $(RFLIB.pic) != no
+_PATH := $(DESTDIR)$(RFLIB.picdir)/lib$(LIB)_pic.a
+
+libinstall: $(_PATH)
+.PRECIOUS: $(_PATH)
+
+$(_PATH): __libinstall lib$(LIB)_pic.a
+.endif
+
+#
+# shared
+#
+.if $(RFLIB.shared) != no
+_PATH := $(DESTDIR)$(RFLIB.shareddir)/lib$(LIB).so.$(SHLIB_FULLVERSION)
+
+libinstall: $(_PATH)
+.PRECIOUS: $(_PATH)
+
+$(_PATH): __libinstall lib$(LIB).so.$(SHLIB_FULLVERSION)
+.endif
