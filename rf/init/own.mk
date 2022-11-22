@@ -155,7 +155,11 @@ MAKEDIRTARGET = \
 			abs="$(.CURDIR)"; \
 			;; \
 		*) \
-			rel="$(_THISDIR_)$$dir"; \
+			if [ -z "$(_THISDIR_)" ]; then \
+				rel="$$dir"; \
+			else \
+				rel="$(_THISDIR_)/$$dir"; \
+			fi; \
 			abs="$(.CURDIR)/$$dir"; \
 			;; \
 		esac; \
