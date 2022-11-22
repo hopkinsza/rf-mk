@@ -1,5 +1,9 @@
 # rf-mk
 
-Development repo for the `rf-mk` make include files.
+A set of include files for (Net)BSD make
+or the portable, cross-platform version of it called `bmake`.
 
-These will probably be merged into `rift` repo when ready.
+You can use them as-is with `make`'s `-m` option
+or the environment variable `MAKESYSPATH`.
+
+Alternatively, install them to `/usr/share/mk` by running `./install.sh` as root.
