@@ -7,12 +7,6 @@
 _RF_OWN_MK_ = 1
 
 #
-# Global flags.
-#
-
-RF.update ?= no
-
-#
 # Output.
 #
 
