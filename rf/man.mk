@@ -24,11 +24,16 @@ maninstall: .PHONY
 
 .for f in $(MAN)
 
+manall: $f
 b := $(MANBUILD.$f:U$(MANBUILD))
 
 .  if $b != no
-manall: $f
 CLEANFILES := $(CLEANFILES) $f
+.  else
+     # Don't allow it to be built without being added to CLEANFILES
+.    if target($f)
+.      error not configured to build man page "$f", but there is a rule for it
+.    endif
 .  endif
 
 .endfor

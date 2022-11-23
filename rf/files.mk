@@ -24,11 +24,16 @@ filesinstall: .PHONY
 
 .for f in $(FILES)
 
+filesall: $f
 b := $(FILESBUILD.$f:U$(FILESBUILD))
 
 .  if $b != no
-filesall: $f
 CLEANFILES := $(CLEANFILES) $f
+.  else
+     # Don't allow it to be built without being added to CLEANFILES
+.    if target($f)
+.      error not configured to build file "$f", but there is a rule for it
+.    endif
 .  endif
 
 .endfor
