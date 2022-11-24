@@ -1,10 +1,10 @@
 .include <rf/init.mk>
 
-FILESOWN ?= $(BINOWN)
-FILESGRP ?= $(BINGRP)
-FILESMODE ?= $(NONBINMODE)
+FILESOWN ?= ${BINOWN}
+FILESGRP ?= ${BINGRP}
+FILESMODE ?= ${NONBINMODE}
 
-FILESDIR ?= $(BINDIR)
+FILESDIR ?= ${BINDIR}
 
 FILESBUILD ?= no
 
@@ -22,13 +22,13 @@ filesinstall: .PHONY
 # Build.
 #
 
-.for f in $(FILES)
+.for f in ${FILES}
 
 filesall: $f
-b := $(FILESBUILD.$f:U$(FILESBUILD))
+b := ${FILESBUILD.$f:U${FILESBUILD}}
 
 .  if $b != no
-CLEANFILES := $(CLEANFILES) $f
+CLEANFILES := ${CLEANFILES} $f
 .  else
      # Don't allow it to be built without being added to CLEANFILES
 .    if target($f)
@@ -42,22 +42,22 @@ CLEANFILES := $(CLEANFILES) $f
 # Installation.
 #
 
-.for f in $(FILES)
+.for f in ${FILES}
 
-_DIR := $(FILESDIR.$f:U$(FILESDIR))
-_NAME := $(FILESNAME.$f:U$(FILESNAME:U$(f:T)))
-_PATH := $(DESTDIR)$(_DIR)/$(_NAME)
+_DIR := ${FILESDIR.$f:U${FILESDIR}}
+_NAME := ${FILESNAME.$f:U${FILESNAME:U${f:T}}}
+_PATH := ${DESTDIR}${_DIR}/${_NAME}
 
-filesinstall: $(_PATH)
-.PRECIOUS: $(_PATH)
+filesinstall: ${_PATH}
+.PRECIOUS: ${_PATH}
 
 # Files can be in a subdir.
 # You can use a slash in a variable name like FILESOWN.files/file=root.
-$(_PATH): $f
-	$(INSTALL_FILE) \
-		-o $(FILESOWN.$(.ALLSRC):U$(FILESOWN)) \
-		-g $(FILESGRP.$(.ALLSRC):U$(FILESGRP)) \
-		-m $(FILESMODE.$(.ALLSRC):U$(FILESMODE)) \
-		$(.ALLSRC) $(.TARGET)
+${_PATH}: $f
+	${INSTALL_FILE} \
+		-o ${FILESOWN.${.ALLSRC}:U${FILESOWN}} \
+		-g ${FILESGRP.${.ALLSRC}:U${FILESGRP}} \
+		-m ${FILESMODE.${.ALLSRC}:U${FILESMODE}} \
+		${.ALLSRC} ${.TARGET}
 
 .endfor

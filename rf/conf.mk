@@ -10,7 +10,7 @@ RFCONF.autodep ?= no
 
 # What variables to pass to the generated configs.
 # By default, pass PREFIX and related variables.
-RFCONF.vars ?= $(PREFIXDIRS)
+RFCONF.vars ?= ${PREFIXDIRS}
 
 .if !empty(RFCONF.h)
 
@@ -22,8 +22,8 @@ RFCONF.h.cmd = echo '\#ifndef _RF_CONF_H_'; \
 	echo '\#define _RF_CONF_H_'; \
 	echo '';
 
-.for i in $(RFCONF.vars)
-RFCONF.h.cmd += echo '\#define $i "$($i)"';
+.for i in ${RFCONF.vars}
+RFCONF.h.cmd += echo '\#define $i "${$i}"';
 .endfor
 
 RFCONF.h.cmd += echo ''; \
@@ -33,20 +33,20 @@ RFCONF.h.cmd += echo ''; \
 # now commands for generating the config
 #
 
-$(RFCONF.h):
-	@$(RFPRINT) 'create $(.TARGET)'
-	@exec >$(.TARGET); $(RFCONF.h.cmd)
+${RFCONF.h}:
+	@${RFPRINT} 'create ${.TARGET}'
+	@exec >${.TARGET}; ${RFCONF.h.cmd}
 
-CLEANFILES := $(CLEANFILES) $(RFCONF.h)
+CLEANFILES := ${CLEANFILES} ${RFCONF.h}
 
 #
 # Optionally have all .o files depend on this config,
 # if you don't want to specify manually.
 #
 
-.if $(RFCONF.h.autodep:U$(RFCONF.autodep)) == yes
-.  for o in $(SRCS:.c=.o)
-$o: $(RFCONF.h)
+.if ${RFCONF.h.autodep:U${RFCONF.autodep}} == yes
+.  for o in ${SRCS:.c=.o}
+$o: ${RFCONF.h}
 .  endfor
 .endif
 

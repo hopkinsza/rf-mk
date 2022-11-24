@@ -12,16 +12,16 @@ _RF_OWN_MK_ = 1
 
 RF.verbose ?= 2
 
-.if $(RF.verbose) == 0
+.if ${RF.verbose} == 0
 RFPRINT = :
 .MAKEFLAGS: -s
-.elif $(RF.verbose) == 1
+.elif ${RF.verbose} == 1
 .MAKEFLAGS: -s
-.elif $(RF.verbose) == 2
+.elif ${RF.verbose} == 2
 # everything normal
-.elif $(RF.verbose) == 3
+.elif ${RF.verbose} == 3
 .MAKEFLAGS: -dl
-.elif $(RF.verbose) == 4
+.elif ${RF.verbose} == 4
 .MAKEFLAGS: -dl -dx
 .endif
 
@@ -33,13 +33,13 @@ RFPRINT ?= echo '\# '
 
 .if !defined(PKG)
 .  if defined(PROG)
-PKG ?= $(PROG)
+PKG ?= ${PROG}
 .  endif
 .  if defined(LIB)
-PKG ?= $(LIB)
+PKG ?= ${LIB}
 .  endif
 PKG ?= foo
-.info PKG is not defined, defaulting to $(PKG)
+.info PKG is not defined, defaulting to ${PKG}
 .endif
 
 PREFIX ?= /usr/local
@@ -56,9 +56,9 @@ PREFIXDIRS += LOCALBASE \
 	ETCBASE \
 	VARBASE
 
-LOCALBASE ?=	$(PREFIX)
-ETCBASE ?=	$(PREFIX)/etc
-VARBASE ?=	$(PREFIX)/var
+LOCALBASE ?=	${PREFIX}
+ETCBASE ?=	${PREFIX}/etc
+VARBASE ?=	${PREFIX}/var
 
 #
 # LOCALBASE traditional directories.
@@ -69,10 +69,10 @@ PREFIXDIRS += BINDIR \
 	LIBDIR \
 	MANDIR
 
-BINDIR ?=	$(LOCALBASE)/bin
-INCDIR ?=	$(LOCALBASE)/include
-LIBDIR ?=	$(LOCALBASE)/lib
-MANDIR ?=	$(LOCALBASE)/share/man
+BINDIR ?=	${LOCALBASE}/bin
+INCDIR ?=	${LOCALBASE}/include
+LIBDIR ?=	${LOCALBASE}/lib
+MANDIR ?=	${LOCALBASE}/share/man
 
 #
 # LOCALBASE additional directories.
@@ -89,19 +89,19 @@ PREFIXDIRS += DOCDIR \
 	LIBDATADIR \
 	SHAREDIR
 
-DOCDIR ?=	$(LOCALBASE)/share/doc/$(PKG)
-EXAMPLESDIR ?=	$(LOCALBASE)/share/examples/$(PKG)
-LIBDATADIR ?=	$(LOCALBASE)/libdata/$(PKG)
-SHAREDIR ?=	$(LOCALBASE)/share/$(PKG)
+DOCDIR ?=	${LOCALBASE}/share/doc/${PKG}
+EXAMPLESDIR ?=	${LOCALBASE}/share/examples/${PKG}
+LIBDATADIR ?=	${LOCALBASE}/libdata/${PKG}
+SHAREDIR ?=	${LOCALBASE}/share/${PKG}
 
 #
 # ETCBASE - one configuration file directory.
-# Set it to $(ETCBASE)/$(PKG) if there are many config files.
+# Set it to ${ETCBASE}/${PKG} if there are many config files.
 #
 
 PREFIXDIRS += ETCDIR
 
-ETCDIR ?=	$(ETCBASE)
+ETCDIR ?=	${ETCBASE}
 
 #
 # VARBASE - for variable runtime data.
@@ -111,9 +111,9 @@ PREFIXDIRS += CACHEDIR \
 	DBDIR \
 	SPOOLDIR
 
-CACHEDIR ?=	$(VARBASE)/cache/$(PKG)
-DBDIR ?=	$(VARBASE)/db/$(PKG)
-SPOOLDIR ?=	$(VARBASE)/spool/$(PKG)
+CACHEDIR ?=	${VARBASE}/cache/${PKG}
+DBDIR ?=	${VARBASE}/db/${PKG}
+SPOOLDIR ?=	${VARBASE}/spool/${PKG}
 
 #
 # Default permissions.
@@ -130,7 +130,7 @@ DIRMODE ?= 755
 #
 # Derived from netbsd MAKEDIRTARGET as defined in <bsd.own.mk>.
 #
-# usage: $(MAKEDIRTARGET) [dir [target]]
+# usage: ${MAKEDIRTARGET} [dir [target]]
 # cd to target, printing a nice output, and run make.
 # No arguments are required.
 # dir defaults to `.'.
@@ -145,21 +145,21 @@ MAKEDIRTARGET = \
 			abs="$$dir"; \
 			;; \
 		.) \
-			rel="$(_THISDIR_)"; \
-			abs="$(.CURDIR)"; \
+			rel="${_THISDIR_}"; \
+			abs="${.CURDIR}"; \
 			;; \
 		*) \
-			if [ -z "$(_THISDIR_)" ]; then \
+			if [ -z "${_THISDIR_}" ]; then \
 				rel="$$dir"; \
 			else \
-				rel="$(_THISDIR_)/$$dir"; \
+				rel="${_THISDIR_}/$$dir"; \
 			fi; \
-			abs="$(.CURDIR)/$$dir"; \
+			abs="${.CURDIR}/$$dir"; \
 			;; \
 		esac; \
 		echo "===> $${rel} [$$targ]$${1:+ (with $$@)}"; \
 		cd "$$abs" \
-		&& $(MAKE) _THISDIR_="$$rel" "$$@" $$targ; \
+		&& ${MAKE} _THISDIR_="$$rel" "$$@" $$targ; \
 	}; \
 	_mkdirtarg
 
@@ -169,13 +169,9 @@ MAKEDIRTARGET = \
 
 INSTALL ?= install
 
-INSTALL_DIR ?=		$(INSTALL) -m $(DIRMODE) -d
-.if $(RF.update) == no
-INSTALL_FILE ?=		$(INSTALL) -c
-.else
-INSTALL_FILE ?=		$(INSTALL) -c -p
-.endif
-INSTALL_LINK ?=		$(INSTALL) -l h
-INSTALL_SYMLINK ?=	$(INSTALL) -l s
+INSTALL_DIR ?=		${INSTALL} -m ${DIRMODE} -d
+INSTALL_FILE ?=		${INSTALL} -c
+INSTALL_LINK ?=		${INSTALL} -l h
+INSTALL_SYMLINK ?=	${INSTALL} -l s
 
 .endif # _RF_OWN_MK_

@@ -10,7 +10,7 @@ TARGETS += all \
 	clean cleandir \
 	install
 
-.for t in $(TARGETS)
+.for t in ${TARGETS}
 $t: .PHONY
 .endfor
 

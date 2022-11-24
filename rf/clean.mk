@@ -2,9 +2,9 @@
 _RF_CLEAN_MK_ = 1
 
 clean:
-	rm -f $(CLEANFILES)
+	rm -f ${CLEANFILES}
 
 cleandir:
-	rm -f $(CLEANDIRFILES)
+	rm -f ${CLEANDIRFILES}
 
 .endif # _RF_CLEAN_MK_

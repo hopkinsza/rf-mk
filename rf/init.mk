@@ -6,11 +6,11 @@
 .if !defined(_RF_INIT_MK_)
 _RF_INIT_MK_ = 1
 
-.-include "$(.CURDIR)/Makefile.local"
-.-include "$(.CURDIR)/../Makefile.inc"
+.-include "${.CURDIR}/Makefile.local"
+.-include "${.CURDIR}/../Makefile.inc"
 
 MAKECONF ?= /etc/rf-mk.conf
-.-include "$(MAKECONF)"
+.-include "${MAKECONF}"
 
 .include <rf/init/own.mk>
 .include <rf/init/sys.mk>
