@@ -31,14 +31,14 @@ RFPRINT ?= echo '\# '
 #### PREFIX and related variables.
 ####
 
-PREFIXVARS = PKG PREFIX
+PREFIXVARS = PREFIX PKG
+
+PREFIX ?= /usr/local
 
 PKG ?= ${PROG:U${LIB}}
 .if empty(PKG)
 .  error PKG is not defined
 .endif
-
-PREFIX ?= /usr/local
 
 #
 # The three base directories to install to.
