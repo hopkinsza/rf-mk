@@ -55,14 +55,14 @@ _MAN := ${f:R}
 _SECT := ${f:E}
 
 .  if !empty(MANSUBDIR)
-_DIR := ${MANDIR}/${MANSUBDIR}/man${_SECT}
+_DIR := ${DESTDIR}${MANDIR}/${MANSUBDIR}/man${_SECT}
 .  else
-_DIR := ${MANDIR}/man${_SECT}
+_DIR := ${DESTDIR}${MANDIR}/man${_SECT}
 .  endif
 
 _NAME := ${MANNAME.$f:U${MANNAME:U${f:T}}}
 
-_PATH := ${DESTDIR}${_DIR}/${_NAME}
+_PATH := ${_DIR}/${_NAME}
 
 maninstall: ${_PATH}
 .PRECIOUS: ${_PATH}

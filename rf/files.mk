@@ -46,9 +46,9 @@ CLEANFILES := ${CLEANFILES} $f
 
 .for f in ${FILES}
 
-_DIR := ${FILESDIR.$f:U${FILESDIR}}
+_DIR := ${DESTDIR}${FILESDIR.$f:U${FILESDIR}}
 _NAME := ${FILESNAME.$f:U${FILESNAME:U${f:T}}}
-_PATH := ${DESTDIR}${_DIR}/${_NAME}
+_PATH := ${_DIR}/${_NAME}
 
 filesinstall: ${_PATH}
 .PRECIOUS: ${_PATH}

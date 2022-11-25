@@ -57,9 +57,9 @@ CLEANFILES := ${CLEANFILES} $f
 
 .  if ${RFCFILES.exampleinstall} != no
 
-_DIR := ${RFCFILES.examplesdir}
+_DIR := ${DESTDIR}${RFCFILES.examplesdir}
 _NAME := ${CFILESNAME.$f:U${CFILESNAME:U${f:T}}}
-_PATH := ${DESTDIR}${_DIR}/${_NAME}
+_PATH := ${_DIR}/${_NAME}
 
 configexampleinstall: ${_PATH}
 .PRECIOUS: ${_PATH}
@@ -77,9 +77,9 @@ ${_PATH}: $f
 # configinstall
 #
 
-_DIR := ${RFCFILES.etcdir}
+_DIR := ${DESTDIR}${RFCFILES.etcdir}
 _NAME := ${CFILESNAME.$f:U${CFILESNAME:U${f:T}}}
-_PATH := ${DESTDIR}${_DIR}/${_NAME}
+_PATH := ${_DIR}/${_NAME}
 
 configinstall: ${_PATH}
 .PRECIOUS: ${_PATH}

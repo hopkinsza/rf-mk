@@ -102,10 +102,10 @@ proginstall: .PHONY
 
 .for f in ${PROGS}
 
-_DIR :=  ${BINDIR.$f:U${BINDIR}}
+_DIR :=  ${DESTDIR}${BINDIR.$f:U${BINDIR}}
 # PROGNAME.prog > PROGNAME > default
 _NAME := ${PROGNAME.$f:U${PROGNAME:U${f}}}
-_PATH := ${DESTDIR}${_DIR}/${_NAME}
+_PATH := ${_DIR}/${_NAME}
 
 proginstall: ${_PATH}
 .PRECIOUS: ${_PATH}
