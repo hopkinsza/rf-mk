@@ -11,35 +11,34 @@
 .\"
 .Sh DESCRIPTION
 There are many files that each do something.
+Default values for variables are listed in brackets.
 .\"
 .\"
 .Sh rf/init.mk
-This file is included from most other files that build or do something.
+This file is included from most others.
 It includes the files
 .Pa Makefile.local ,
 .Pa ../Makefile.inc ,
-and $(MAKECONF) \(em typically
+and ${MAKECONF} \(em typically
 .Pa /etc/rf-mk.conf .
 .Pp
-Then, it includes a few other files that are mostly separated
+Then, it includes a few other files that are only separated
 for organizational purposes.
 .Pp
 They are:
-.Ss rf/own.mk
+.Ss rf/init/own.mk
 Sets default values for globally useful variables and flags,
 and defines some useful shell functions.
 .Pp
 The following variables are available:
 .Bl -tag -width Ds -offset 3n
-.It RF.update
-blah
-.It RF.verbose
+.It RF.verbose [2]
 Controls output verbosity.
 .Bl -tag -width 2n -compact
 .It 0:
 Minimal output.
 .It 1:
-Describe what is occurring with $(RFPRINT).
+Describe what is occurring with ${RFPRINT}.
 .It 2:
 Normal output.
 .It 3:
@@ -59,11 +58,81 @@ as if
 was invoked with
 .Fl dx .
 .El
-.It PREFIX
-blah
+.It RFPRINT [echo '# ']
+Command used to describe what is happening.
+It is used like
+.Xr echo 1 .
+.It PREFIXVARS
+List of variables used to configure where things get installed to,
+and where compiled programs look for files.
+You cannot change this, but it is documented for completeness.
+It includes the following variables.
+.It PREFIX [/usr/local]
+Used
+.Sy only
+for constructing default values for LOCALBASE, ETCBASE, and VARBASE.
+.It PKG [${PROG:U${LIB}}]
+Used in constructing
+.Dq personal
+directories for your package to use.
+.It LOCALBASE [${PREFIX}]
+Base directory for static data/files.
+This includes binaries, libraries, and data files.
+.It BINDIR [${LOCALBASE}/bin]
+Where to install binaries.
+.It INCDIR [${LOCALBASE}/include]
+Where to install C include files.
+.It LIBDIR [${LOCALBASE}/lib]
+Where to install libraries.
+.It MANDIR [${LOCALBASE}/share/man]
+Where to install man pages.
+.It DOCDIR [${LOCALBASE}/share/doc/${PKG}]
+Misc documentation files.
+.It EXAMPLESDIR [${LOCALBASE}/share/examples/${PKG}]
+Example files.
+.It LIBDATADIR [${LOCALBASE}/libdata/${PKG}]
+Static, architecture-dependent data files.
+Not used very often, but includes firmware.
+.It SHAREDIR [${LOCALBASE}/share/${PKG}]
+Static, architecture-independent data files.
+.It ETCBASE [${PREFIX}/etc]
+Base directory for configuration files.
+It may commonly be set to
+.Pa /etc .
+.It ETCDIR [${ETCBASE}]
+Configuration file directory.
+It may be set to
+.Ql ${ETCBASE}/${PKG}
+if there are many config files.
+.It VARBASE [${PREFIX}/var]
+Base directory for dynamic (variable) data/files.
+It may commonly be set to
+.Pa /var .
+.It CACHEDIR [${VARBASE}/cache/${PKG}]
+Cache files.
+.It DBDIR [${VARBASE}/db/${PKG}]
+Misc dynamic data files.
+.It SPOOLDIR [${VARBASE}/spool/${PKG}]
+Spool or queue files.
+Files here are typically added and removed often and/or grow and shrink often.
 .El
 .Ss rf/sys.mk
 Defines suffix rules that are used by multiple files.
+The following variables are available:
+.Bl -tag -width Ds -offset 3n
+.It CFLAGS
+Per-file additions: CFLAGS.<file>
+.br
+Flags used for compiling C files.
+.It CXXFLAGS
+Per-file additions: CXXFLAGS.<file>
+.br
+Flags used for compiling CXX files.
+.It CPPFLAGS
+Per-file additions: CPPFLAGS.<file>
+.br
+C preprocessor flags.
+.El
 .Ss rf/targ.mk
 Ensures existence of the default targets.
 .\"
@@ -74,19 +143,277 @@ Include all
 files except those that would cause conflicts with each other.
 .\"
 .\"
+.Sh rf/cfiles.mk
+Like
+.In rf/files.mk
+but for config files.
+You cannot install to a specific directory.
+.Ss Targets
+.Bl -tag -width Ds
+.It configall
+Build the configs.
+.It configinstall
+Install the configs to ${ETCDIR}.
+Unlike most
+.Ql *all
+targets, this is not hooked into the main
+.Ql all
+target.
+.It configexampleinstall
+Install the configs to ${EXAMPLESDIR}.
+This is hooked into the
+.Ql all
+target.
+.El
+.Ss Variables
+.Bl -tag -width Ds
+.It CFILESOWN, CFILESGRP, CFILESMODE, CFILESBUILD
+Same as the corresponding variables in
+.In rf/files.mk .
+.It RFCFILES.exampleinstall [yes]
+If yes, install the config files to ${EXAMPLESDIR}.
+.El
+.\"
+.\"
 .Sh rf/clean.mk
 Cleans up generated files.
 .Ss Targets
 .Bl -tag -width Ds
 .It clean
-Remove $(CLEANFILES).
+Remove ${CLEANFILES}.
 .It cleandir
-Remove $(CLEANDIRFILES).
+Remove ${CLEANDIRFILES}.
 .El
 .\"
 .\"
 .Sh rf/conf.mk
 Handles build-time configuration generation.
+The typical use is to export
+.Nm
+variables into a file that can then be included by source code.
+.Ss Variables
+.Bl -tag -width Ds
+.It RFCONF.autodep
+Try to intelligently make generated files
+.Pq e.g. Pa *.o
+depend on the generated
+build-time config files
+.Pq e.g. Pa rfconf.h
+so you don't have to worry about specifying it yourself.
+.It RFCONF.vars
+.Nm
+variables to export.
+.It RFCONF.h
+A filename, typically
+.Pa rfconf.h .
+If defined, define the shell commands to generate the file,
+which is a dump of
+.Ql RFCONF.vars
+variables in C header file format using
+.Ql #define .
+.It RFCONF.h.autodep
+.Ql RFCONF.autodep
+override for
+.Ql RFCONF.h
+only.
+.El
+.Ss Examples
+Just generate the config.
+Note that
+.In rf/all.mk
+must be included, not just
+.In rf/conf.mk
+on its own,
+otherwise assumptions made by the code are broken.
+.Bd -literal -offset Ds
+RFCONF.h = rfconf.h
+
+all: rfconf.h
+
+\&.include <rf/all.mk>
+.Ed
+.Pp
+Compiles a C program
+.Pa main.c
+that uses the line
+.Ql #include "rfconf.h"
+.Bd -literal -offset Ds
+RFCONF.autodep = yes
+RFCONF.h = rfconf.h
+
+PROG = main
+
+\&.include <rf/prog.mk>
+.Ed
+.\"
+.\"
+.Sh rf/files.mk
+Build and install files.
+.Ss Targets
+.Bl -tag -width Ds
+.It filesall
+Build the files.
+.It filesinstall
+Install the files.
+.El
+.Ss Variables
+.Bl -tag -width Ds
+.It FILES
+List of files to build/install.
+.It FILESOWN [${BINOWN}]
+Per-file override: FILESOWN.<file>
+.br
+Owner.
+.It FILESGRP [${BINGRP}]
+Per-file override: FILESGRP.<file>
+.br
+Group.
+.It FILESMODE [${NONBINMODE}]
+Per-file override: FILESMODE.<file>
+.br
+Mode.
+.It FILESDIR [${BINDIR}]
+Per-file override: FILESDIR.<file>
+.br
+Default location to install the files.
+.It FILESNAME
+Per-file override: FILESNAME.<file>
+.br
+Name to install each file as.
+Defaults to the name of the file.
+.It FILESBUILD [no]
+Per-file override: FILESBUILD.<file>
+.br
+If
+.Ql yes ,
+add each file to CLEANFILES
+and expect there to be a rule to build them.
+.El
+.\"
+.\"
+.Sh rf/lib.mk
+Build and install different types of C libraries.
+This includes the typical
+.Pa *.a
+static library,
+the
+.Pa *_p.a
+profiled library,
+the
+.Pa *_pic.a
+PIC library,
+and the
+.Pa *.so.*
+shared library.
+.Ss Targets
+.Bl -tag -width Ds
+.It liball
+Build the libraries.
+.It libinstall
+Install the libraries.
+.El
+.Ss Variables
+.Bl -tag -width Ds
+.It LIB
+Name of the library.
+.It SRCS [${LIB}.c]
+Source files.
+.It LIBOWN [${BINOWN}]
+Owner.
+.It LIBGRP [${BINGRP}]
+Group.
+.It LIBMODE [${BINMODE}]
+Mode.
+.It SHLIB_MAJOR, SHLIB_MINOR, SHLIB_TEENY
+Major, minor, and teeny version numbers of the shared library.
+They can also be defined in the file
+.Pa shlib_version
+with the format:
+.Bd -literal -offset 3n
+major=1
+minor=2
+teeny=3
+.Ed
+.It RFLIB.static [yes]
+Build the static library.
+.It RFLIB.prof [yes]
+Build the profiled library.
+.It RFLIB.pic [yes]
+Build the pic library.
+.It RFLIB.shared [yes]
+Build the shared library.
+.El
+.\"
+.\"
+.Sh rf/man.mk
+Builds and installs man pages.
+.Ss Targets
+.Bl -tag -width Ds
+.It manall
+Build the man pages.
+.It maninstall
+Install the man pages.
+.El
+.Ss Variables
+.Bl -tag -width Ds
+.It MAN
+List of man pages to build/install.
+.It MANNAME
+Per-file override: MANNAME.<file>
+.br
+Name to install each man page as.
+.It MANSUBDIR
+Subdirectory under ${MANDIR} to install to.
+.It MANOWN [${BINOWN}]
+Owner.
+.It MANOWN [${BINGRP}]
+Group.
+.It MANOWN [${NONBINMODE}]
+Mode.
+.El
+.\"
+.\"
+.Sh rf/prog.mk
+Builds and installs C programs.
+It uses BINOWN, BINGRP, BINMODE, and BINDIR as defined in
+.In rf/init/own.mk .
+.Ss Targets
+.Bl -tag -width Ds
+.It progall
+Build the programs.
+.It proginstall
+Install the programs.
+.El
+.Ss Variables
+.Bl -tag -width Ds
+.It PROG, PROGS
+Program or programs to build, respectively.
+You can only specify one of these variables.
+.It SRCS [${PROG}.c]
+Per-prog override: SRCS.<prog>
+.br
+Sources.
+.It PROGNAME
+Per-prog override: PROGNAME.<prog>
+.br
+Name to install each program as.
+.It LDFLAGS
+Per-prog additions: LDFLAGS.<prog>
+.br
+Linker flags.
+.It LDADD
+Per-prog additions: LDADD.<prog>
+.br
+Additional loader objects, usually libraries.
+.\" TODO: add explanation of example
+.Bd -literal -offset Ds
+LDADD += -lutil -lcompat
+.Ed
+.El
+.\"
+.\"
+.Sh rf/subdir.mk
+Descend into subdirectories.
 .\"
 .\"
 .Sh FILES
