@@ -1,4 +1,6 @@
-.include <rf/init.mk>
+.if !defined(_RF_PROG_MK_)
+.  include <rf/init.mk>
+.endif
 
 #
 # PROG -> PROGS conversion if necessary.

@@ -7,7 +7,9 @@
 # Does not currently look for ${dir}.${MACHINE}.
 #
 
-.include <rf/init.mk>
+.if !defined(_RF_INIT_MK_)
+.  include <rf/init.mk>
+.endif
 
 #
 # Generate appropriate targets for descending into subdirs.

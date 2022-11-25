@@ -2,6 +2,10 @@
 # Generate configs, typically to be used before `all' target.
 #
 
+.if !defined(_RF_INIT_MK_)
+.  include <rf/init.mk>
+.endif
+
 .if !defined(_RF_CONF_MK_)
 _RF_CONF_MK_ = 1
 
