@@ -10,13 +10,6 @@
 
 .if defined(PROG)
 PROGS = ${PROG}
-# these are the variables for which VAR.prog does not default to VAR.
-.  if defined(PROGNAME)
-PROGNAME.${PROG} = ${PROGNAME}
-.  endif
-.  if defined(SRCS)
-SRCS.${PROG} = ${SRCS}
-.  endif
 .endif
 
 #
@@ -38,10 +31,8 @@ progall: .PHONY
 .for p in ${PROGS}
 CLEANFILES := ${CLEANFILES} $p
 
-SRCS.$p ?= $p.c
-PROGNAME.$p ?= $p
-
-BINDIR.$p ?= ${BINDIR}
+SRCS.$p ?= ${SRCS:U$p.c}
+PROGNAME.$p ?= ${PROGNAME:U$p}
 
 # Loop through SRCS to figure out the object files.
 # s -> src
