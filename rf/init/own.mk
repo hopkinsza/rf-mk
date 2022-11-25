@@ -114,13 +114,15 @@ SPOOLDIR ?=	${VARBASE}/spool/${PKG}
 # Default permissions.
 #
 
-BINOWN ?= root
-BINGRP ?= wheel
-BINMODE ?= 555
-NONBINMODE ?= 444
-EDITMODE ?= 644
+BINOWN ?=	root
+BINGRP ?=	wheel
+BINMODE ?=	555
+NONBINMODE ?=	444
+EDITMODE ?=	644
 
-DIRMODE ?= 755
+DIROWN ?=	${BINOWN}
+DIRGRP ?=	${BINGRP}
+DIRMODE ?=	755
 
 #
 # Derived from netbsd MAKEDIRTARGET as defined in <bsd.own.mk>.
@@ -164,7 +166,7 @@ MAKEDIRTARGET = \
 
 INSTALL ?= install
 
-INSTALL_DIR ?=		${INSTALL} -m ${DIRMODE} -d
+INSTALL_DIR ?=		${INSTALL} -d -o ${DIROWN} -g ${DIRGRP} -m ${DIRMODE}
 INSTALL_FILE ?=		${INSTALL} -c
 INSTALL_LINK ?=		${INSTALL} -l h
 INSTALL_SYMLINK ?=	${INSTALL} -l s
