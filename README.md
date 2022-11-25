@@ -22,6 +22,8 @@ and is opinionated about what directories your program should use.
 usage
 -----
 
+Given the following files in an empty directory...
+
 ```c
 // FILE: main.c
 
@@ -41,6 +43,11 @@ PROG = main
 
 .include <rf/prog.mk>
 ```
+
+you can run `bmake` and it will create a program `main`.
+Even though no sources were specified,
+the variable `SRCS` defaulted to `main.c`.
+Try `bmake -n install` to show what commands would be ran if you attempted to install.
 
 installation
 ------------
