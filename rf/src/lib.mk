@@ -141,6 +141,9 @@ lib${LIB}_pic.a: ${_OBJS_PIC}
 	${RANLIB} ${.TARGET}
 
 # LDADD?
+# XXX: See gcc(1) `-shared'.
+# Should specify the same -f{pic,PIC} and model suboptions used for compilation.
+# TODO: model suboptions (CPUFLAGS?)
 lib${LIB}.so.${SHLIB_FULLVERSION}: ${_OBJS_PIC}
 	@${RFPRINT} build shared ${LIB} library
 	@rm -f ${.TARGET}
