@@ -13,6 +13,7 @@ MAKECONF ?= /etc/rf-mk.conf
 .-include "${MAKECONF}"
 
 .include <rf/init/own.mk>
+.include <rf/init/prefix.mk>
 .include <rf/init/sys.mk>
 .include <rf/init/targ.mk>
 

@@ -26,6 +26,7 @@ Then, it includes a few other files that are only separated
 for organizational purposes.
 .Pp
 They are:
+.\"
 .Ss rf/init/own.mk
 Sets default values for globally useful variables and flags,
 and defines some useful shell functions.
@@ -62,6 +63,13 @@ was invoked with
 Command used to describe what is happening.
 It is used like
 .Xr echo 1 .
+.El
+.\"
+.Ss rf/init/prefix.mk
+Defines the PREFIXVARS.
+.Pp
+The following variables are available:
+.Bl -tag -width Ds -offset 3n
 .It PREFIXVARS
 List of variables used to configure where things get installed to,
 and where compiled programs look for files.
@@ -75,6 +83,10 @@ for constructing default values for LOCALBASE, ETCBASE, and VARBASE.
 Used in constructing
 .Dq personal
 directories for your package to use.
+.El
+.Pp
+LOCALBASE:
+.Bl -tag -width Ds -offset 3n
 .It LOCALBASE [${PREFIX}]
 Base directory for static data/files.
 This includes binaries, libraries, and data files.
@@ -95,6 +107,10 @@ Static, architecture-dependent data files.
 Not used very often, but includes firmware.
 .It SHAREDIR [${LOCALBASE}/share/${PKG}]
 Static, architecture-independent data files.
+.El
+.Pp
+ETCBASE:
+.Bl -tag -width Ds -offset 3n
 .It ETCBASE [${PREFIX}/etc]
 Base directory for configuration files.
 It may commonly be set to
@@ -104,6 +120,10 @@ Configuration file directory.
 It may be set to
 .Ql ${ETCBASE}/${PKG}
 if there are many config files.
+.El
+.Pp
+VARBASE:
+.Bl -tag -width Ds -offset 3n
 .It VARBASE [${PREFIX}/var]
 Base directory for dynamic (variable) data/files.
 It may commonly be set to
@@ -116,6 +136,7 @@ Misc dynamic data files.
 Spool or queue files.
 Files here are typically added and removed often and/or grow and shrink often.
 .El
+.\"
 .Ss rf/sys.mk
 Defines suffix rules that are used by multiple files.
 The following variables are available:
@@ -133,6 +154,7 @@ Per-file additions: CPPFLAGS.<file>
 .br
 C preprocessor flags.
 .El
+.\"
 .Ss rf/targ.mk
 Ensures existence of the default targets.
 .\"
