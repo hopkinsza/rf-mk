@@ -14,7 +14,7 @@ RFCONF.autodep ?= no
 
 # What variables to pass to the generated configs.
 # By default, pass PREFIX and related variables.
-RFCONF.vars ?= ${PREFIXDIRS}
+RFCONF.vars ?= ${PREFIXVARS}
 
 .if !empty(RFCONF.h)
 

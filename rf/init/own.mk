@@ -31,28 +31,23 @@ RFPRINT ?= echo '\# '
 #### PREFIX and related variables.
 ####
 
-.if !defined(PKG)
-.  if defined(PROG)
-PKG ?= ${PROG}
-.  endif
-.  if defined(LIB)
-PKG ?= ${LIB}
-.  endif
-PKG ?= foo
-.info PKG is not defined, defaulting to ${PKG}
+PREFIXVARS = PKG PREFIX
+
+PKG ?= ${PROG:U${LIB}}
+.if empty(PKG)
+.  error PKG is not defined
 .endif
 
 PREFIX ?= /usr/local
-PREFIXDIRS = PREFIX
 
 #
 # The three base directories to install to.
 # LOCALBASE: static data/files
 # ETCBASE: configuration files
-# VARBASE: dynamic (variables) data/files
+# VARBASE: dynamic (variable) data/files
 #
 
-PREFIXDIRS += LOCALBASE \
+PREFIXVARS += LOCALBASE \
 	ETCBASE \
 	VARBASE
 
@@ -64,7 +59,7 @@ VARBASE ?=	${PREFIX}/var
 # LOCALBASE traditional directories.
 #
 
-PREFIXDIRS += BINDIR \
+PREFIXVARS += BINDIR \
 	INCDIR \
 	LIBDIR \
 	MANDIR
@@ -84,7 +79,7 @@ MANDIR ?=	${LOCALBASE}/share/man
 # TODO: libdata vs share?
 #
 
-PREFIXDIRS += DOCDIR \
+PREFIXVARS += DOCDIR \
 	EXAMPLESDIR \
 	LIBDATADIR \
 	SHAREDIR
@@ -99,7 +94,7 @@ SHAREDIR ?=	${LOCALBASE}/share/${PKG}
 # Set it to ${ETCBASE}/${PKG} if there are many config files.
 #
 
-PREFIXDIRS += ETCDIR
+PREFIXVARS += ETCDIR
 
 ETCDIR ?=	${ETCBASE}
 
@@ -107,7 +102,7 @@ ETCDIR ?=	${ETCBASE}
 # VARBASE - for variable runtime data.
 #
 
-PREFIXDIRS += CACHEDIR \
+PREFIXVARS += CACHEDIR \
 	DBDIR \
 	SPOOLDIR
 
