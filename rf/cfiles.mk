@@ -29,11 +29,16 @@ configinstall: .PHONY
 
 .for f in ${CFILESS}
 
+configall: $f
 b := ${CFILESBUILD.$f:U${CFILESBUILD}}
 
 .  if $b != no
-configall: $f
 CLEANFILES := ${CLEANFILES} $f
+.  else
+     # Don't allow it to be built without being added to CLEANFILES
+.    if target($f)
+.      error not configured to build config "$f", but there is a rule for it
+.    endif
 .  endif
 
 .endfor
