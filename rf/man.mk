@@ -68,6 +68,7 @@ maninstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
+	${ENSURE_DIR}
 	${INSTALL_FILE} \
 		-o ${MANOWN.${.ALLSRC}:U${MANOWN}} \
 		-g ${MANGRP.${.ALLSRC}:U${MANGRP}} \

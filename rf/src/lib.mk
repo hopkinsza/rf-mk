@@ -164,6 +164,7 @@ install: libinstall
 libinstall: .PHONY
 
 __libinstall: .USE
+	${ENSURE_DIR}
 	${INSTALL_FILE} \
 		-o ${LIBOWN} \
 		-g ${LIBGRP} \

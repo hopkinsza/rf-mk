@@ -65,6 +65,7 @@ configexampleinstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
+	${ENSURE_DIR}
 	${INSTALL_FILE} \
 		-o ${CFILESOWN.${.ALLSRC}:U${CFILESOWN}} \
 		-g ${CFILESGRP.${.ALLSRC}:U${CFILESGRP}} \
@@ -85,6 +86,7 @@ configinstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
+	${ENSURE_DIR}
 	${INSTALL_FILE} \
 		-o ${CFILESOWN.${.ALLSRC}:U${CFILESOWN}} \
 		-g ${CFILESGRP.${.ALLSRC}:U${CFILESGRP}} \

@@ -111,6 +111,7 @@ proginstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
+	${ENSURE_DIR}
 	${INSTALL_FILE} \
 		-o ${BINOWN.${.ALLSRC}:U${BINOWN}} \
 		-g ${BINGRP.${.ALLSRC}:U${BINGRP}} \
