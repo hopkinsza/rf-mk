@@ -23,6 +23,14 @@ PROGS = ${PROG}
 # for historical reasons
 CFLAGS += ${COPTS}
 
+# determine whether or not to append to MAN variable,
+# used by rf/man.mk
+.if empty(MAN)
+_ADDMEN = yes
+.else
+_ADDMEN = no
+.endif
+
 #
 # Add rules to build each program.
 #
@@ -32,6 +40,10 @@ progall: .PHONY
 
 .for p in ${PROGS}
 CLEANFILES := ${CLEANFILES} $p
+
+.if ${_ADDMEN} == yes
+MAN += $p.1
+.endif
 
 SRCS.$p ?= ${SRCS:U$p.c}
 PROGNAME.$p ?= ${PROGNAME:U$p}
