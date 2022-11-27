@@ -72,7 +72,9 @@ main()
 
 #include <stdio.h>
 
-int
+#include "extern.h"
+
+void
 f()
 {
 	printf("hello from f()\n");
