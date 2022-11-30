@@ -14,27 +14,14 @@ complexity, and portability goals.
 I thought I could make one that's simple, clean, and with the features I want
 to build my projects with minimal fuss.
 
-
 Basic Usage
 -----
 
-Given the following files in an empty directory...
+See `examples/prog/simple/`.
 
-```c
-// FILE: main.c
-
-#include <stdio.h>
-
-int
-main()
-{
-	printf("hi\n");
-}
-```
+It simply has the following `Makefile`:
 
 ```make
-# FILE: Makefile
-
 PROG = main
 MAN =
 
@@ -45,6 +32,7 @@ You can run `bmake` and it will create a program `main`.
 Even though no list of sources was specified,
 it defaulted to `main.c`
 Try `bmake -n install` to show what commands would be ran if you attempted to install.
+`bmake clean` to remove the built files.
 
 Note that you need the line `MAN =`,
 otherwise `<rf/prog.mk>` would give it a default of `main.1`.
@@ -53,53 +41,13 @@ Harassing you for not having a man page has been a feature since `4.4BSD`!
 More Sources
 ------------
 
-Given...
+See `examples/prog/multisrc/`.
+To build, you will need development files for a `curses` library implementation,
+e.g. package `libncurses-dev` on debian.
 
-```c
-// FILE: main.c
-
-#include "extern.h"
-
-int
-main()
-{
-	f();
-}
-```
-
-```c
-// FILE: util.c
-
-#include <stdio.h>
-
-#include "extern.h"
-
-void
-f()
-{
-	printf("hello from f()\n");
-}
-```
-
-```c
-// FILE: extern.h
-
-#ifndef _EXTERN_H_
-
-void f();
-
-#endif // _EXTERN_H_
-```
-
-```make
-PROG = main
-SRCS = main.c util.c
-MAN =
-
-.include <rf/prog.mk>
-```
-
-It works just as well.
+The variable `SRCS` was used to override the default of `main.c`;
+The file `draw.c` was compiled with additional `CPPFLAGS`;
+and the program was linked with `-lcurses`.
 
 - You can change the name to *install* the program as with `PROGNAME`.
 - Flags to the linker (technically passed to `${CC}` during linking)
@@ -110,6 +58,8 @@ typically used for libraries.
 
 Multiple Programs
 -----------------
+
+See `examples/progs/*`.
 
 The traditional `4.4BSD` include files were designed to build one program per
 source directory.
@@ -170,6 +120,7 @@ MAN =
 ```
 
 Well, that doesn't seem very useful...
+`SRCS` has overridden the default value for both `alpha` and `bravo`.
 What you need is to use the *per-program* variant of `SRCS`:
 
 ```make
@@ -179,8 +130,6 @@ What you need is to use the *per-program* variant of `SRCS`:
 
 PROGS = alpha bravo
 SRCS.alpha = alpha.c util.c
-# the following line is not needed since it's still the default
-#SRCS.bravo = bravo.c
 MAN =
 
 .include <rf/prog.mk>
