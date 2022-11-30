@@ -1,18 +1,34 @@
 #
-# Set up PREFIXVARS.
+# Set up PKGVARS and PREFIXVARS.
 #
 
 .if !defined(_RF_PREFIX_MK_)
 _RF_PREFIX_MK_ = 1
 
-PREFIXVARS = PREFIX PKG
+#
+# PKGVARS.
+#
 
-PREFIX ?= /usr/local
+PKGVARS = PKG VER PKGDIRNAME PKGDISTNAME
 
 PKG ?= ${PROG:U${LIB}}
 .if empty(PKG)
 .  error PKG is not defined
 .endif
+
+VER ?= 0
+
+PKGDIRNAME ?= ${PKG}
+
+PKGDISTNAME ?= ${PKG}-${VER}
+
+#
+# PREFIXVARS.
+#
+
+PREFIXVARS = PREFIX
+
+PREFIX ?= /usr/local
 
 #
 # The three base directories to install to.
@@ -58,10 +74,10 @@ PREFIXVARS += DOCDIR \
 	LIBDATADIR \
 	SHAREDIR
 
-DOCDIR ?=	${LOCALBASE}/share/doc/${PKG}
-EXAMPLESDIR ?=	${LOCALBASE}/share/examples/${PKG}
-LIBDATADIR ?=	${LOCALBASE}/libdata/${PKG}
-SHAREDIR ?=	${LOCALBASE}/share/${PKG}
+DOCDIR ?=	${LOCALBASE}/share/doc/${PKGDIRNAME}
+EXAMPLESDIR ?=	${LOCALBASE}/share/examples/${PKGDIRNAME}
+LIBDATADIR ?=	${LOCALBASE}/libdata/${PKGDIRNAME}
+SHAREDIR ?=	${LOCALBASE}/share/${PKGDIRNAME}
 
 #
 # ETCBASE - one configuration file directory.
@@ -80,8 +96,8 @@ PREFIXVARS += CACHEDIR \
 	DBDIR \
 	SPOOLDIR
 
-CACHEDIR ?=	${VARBASE}/cache/${PKG}
-DBDIR ?=	${VARBASE}/db/${PKG}
-SPOOLDIR ?=	${VARBASE}/spool/${PKG}
+CACHEDIR ?=	${VARBASE}/cache/${PKGDIRNAME}
+DBDIR ?=	${VARBASE}/db/${PKGDIRNAME}
+SPOOLDIR ?=	${VARBASE}/spool/${PKGDIRNAME}
 
 .endif # _RF_PREFIX_MK_

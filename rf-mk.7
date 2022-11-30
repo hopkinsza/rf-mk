@@ -65,11 +65,28 @@ It is used like
 .Xr echo 1 .
 .El
 .\"
-.Ss rf/init/prefix.mk
-Defines the PREFIXVARS.
+.Ss rf/init/pkg.mk
+Defines variables that are typically passed to the build with
+.In rf/conf.mk .
 .Pp
 The following variables are available:
 .Bl -tag -width Ds -offset 3n
+.It PKGVARS
+List of variables related to the package name and version.
+You cannot change this, but it is documented for completeness.
+.It PKG [${PROG:U${LIB}}]
+Name of the package.
+It should theoretically be globally unique.
+.It VER [0]
+Package version.
+.It PKGDIRNAME [${PKG}]
+Used in constructing
+.Dq personal
+directories for your package to use.
+It may commonly be set to
+.Ql ${PKG}-${VER} .
+.It PKGDISTNAME [${PKG}-${VER}]
+Filename to distribute the package as.
 .It PREFIXVARS
 List of variables used to configure where things get installed to,
 and where compiled programs look for files.
@@ -79,10 +96,6 @@ It includes the following variables.
 Used
 .Sy only
 for constructing default values for LOCALBASE, ETCBASE, and VARBASE.
-.It PKG [${PROG:U${LIB}}]
-Used in constructing
-.Dq personal
-directories for your package to use.
 .El
 .Pp
 LOCALBASE:
