@@ -11,10 +11,9 @@ _RF_PREFIX_MK_ = 1
 
 PKGVARS = PKG VER PKGDIRNAME PKGDISTNAME
 
-PKG ?= ${PROG:U${LIB}}
-.if empty(PKG)
-.  error PKG is not defined
-.endif
+# just use a default -- may change in the future;
+# for example, ${PROG:U${LIB}}
+PKG ?= junkpkg
 
 VER ?= 0
 
