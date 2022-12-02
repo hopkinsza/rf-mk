@@ -52,7 +52,7 @@ and the program was linked with `-lcurses`.
 - You can change the name to *install* the program as with `PROGNAME`.
 - Flags to the linker (technically passed to `${CC}` during linking)
 can be specified with `LDFLAGS`.
-- Additional loader objects can be specified with `LDADD` --
+- Additional linker objects can be specified with `LDADD` --
 typically used for libraries.
   - To link with the utility and curses libraries: `LDADD += -lutil -lcurses`
 
