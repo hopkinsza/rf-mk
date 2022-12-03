@@ -1,7 +1,10 @@
 rf-mk
 =====
 
-A set of include files for (Net)BSD `make`
+`rf-mk` is a build system for software packages,
+primarily targeting C.
+
+Technically, it is a set of include files for (Net)BSD `make`
 or the portable, cross-platform version of it called `bmake`,
 in the spirit of the traditional `4.4BSD` files.
 There may be an effort in the future to make the files portable to OpenBSD `make` too.
@@ -158,12 +161,59 @@ They have per-prog variants to specify additional options on a per-program basis
 If you are just using `PROG`, you never need to use per-prog variants of anything,
 just use the generic `LDADD`, etc.
 
-PREFIX support
---------------
+PKG and PREFIX support
+----------------------
 
-`rf-mk` has built-in `PREFIX` support
-and is opinionated about what directories your program should use.
-See `prefix.mk` in the man page for the full list.
+`rf-mk` is intended for building software packages.
+A package has a name `PKG`, which is theoretically globally unique,
+and a version number `VER`.
+
+You can install to a specific `PREFIX`, by default `/usr/local`.
+There are actually three main directories to install to and/or use,
+all of which have their default value set in terms of `PREFIX`:
+
+- `LOCALBASE` for static files
+- `ETCBASE` for config files
+- `VARBASE` for dynamic (variable) files
+
+There are more specific directories for specific purposes --
+see `init/pkg.mk` in the man page for the full list.
+
+The `install` target will install into `PREFIX` automatically.
+However, it is extremely useful to pass these variables to the build so
+your program can look for files in the right place.
+This is what `rf/conf.mk` is for.
+
+All `rf/conf.mk` really does is dump `rf-mk` variables into a file.
+Currently, this can only be a `.h` C header file,
+but other styles may be supported in the future.
+
+Set `RFCONF.h = yes` to gain the capability to generate the file `rfconf.h`.
+You can then make the appropriate `.o` files depend on `rfconf.h`,
+and it will be generated.
+Alternatively, set `RFCONF.autodep = yes` to have every `.o` depend on it automatically.
+
+See `examples/pkg/*`.
+
+Note that `rfconf.h` is just a dump of `rf-mk` variables.
+You can get inconsistencies between what the code sees as `PREFIX`
+and where you actually installed to if you're not careful:
+
+```
+$ make
+(-> generates config.h with PREFIX=/usr/local, then compiles C code using it)
+$ make PREFIX=/opt install
+(-> the program is already compiled, and it is installed to /opt/bin)
+```
+
+The solution is to make sure the variables are identical for build and installation.
+If you change variables, you must run `make clean`.
+
+Instead of needing to remember your configuration
+and specifying it on the command line,
+you can put variable assignments in `Makefile.local`,
+which is included by `rf/init.mk`.
+You must still run `make clean` after any changes though!
 
 Installation
 ------------
