@@ -66,6 +66,12 @@ _OBJS.$p =
 o := ${s:R:S/$/.o/}
 CLEANFILES := ${CLEANFILES} $o
 _OBJS.$p := ${_OBJS.$p} $o
+
+# XXX: RFCONF.h.autodep support
+.    if "${RFCONF.h.autodep}" == yes
+$o: ${RFCONF.h.file}
+.    endif
+
 .  endfor
 
 # Figure out if we should link with CXX, based on source suffixes.

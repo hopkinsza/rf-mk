@@ -13,10 +13,14 @@ _RF_CONF_MK_ = 1
 RFCONF.autodep ?= no
 
 # What variables to pass to the generated configs.
-# By default, pass PREFIX and related variables.
 RFCONF.vars ?= ${PKGVARS} ${PREFIXVARS}
 
-.if !empty(RFCONF.h)
+.if "${RFCONF.h}" == yes
+
+RFCONF.h.autodep ?= ${RFCONF.autodep}
+RFCONF.h.vars ?= ${RFCONF.vars}
+
+RFCONF.h.file ?= rfconf.h
 
 #
 # Build variable RFCONF.h.cmd, which contains shell commands to create the file.
@@ -26,7 +30,7 @@ RFCONF.h.cmd = echo '\#ifndef _RF_CONF_H_'; \
 	echo '\#define _RF_CONF_H_'; \
 	echo '';
 
-.for i in ${RFCONF.vars}
+.for i in ${RFCONF.h.vars}
 RFCONF.h.cmd += echo '\#define $i "${$i}"';
 .endfor
 
@@ -37,22 +41,11 @@ RFCONF.h.cmd += echo ''; \
 # now commands for generating the config
 #
 
-${RFCONF.h}:
+${RFCONF.h.file}:
 	@${RFPRINT} 'create ${.TARGET}'
 	@exec >${.TARGET}; ${RFCONF.h.cmd}
 
-CLEANFILES := ${CLEANFILES} ${RFCONF.h}
-
-#
-# Optionally have all .o files depend on this config,
-# if you don't want to specify manually.
-#
-
-.if ${RFCONF.h.autodep:U${RFCONF.autodep}} == yes
-.  for o in ${SRCS:.c=.o}
-$o: ${RFCONF.h}
-.  endfor
-.endif
+CLEANFILES := ${CLEANFILES} ${RFCONF.h.file}
 
 .endif
 

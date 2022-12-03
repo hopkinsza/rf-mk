@@ -110,6 +110,11 @@ _OBJS_PIC =	${SRCS:R:C/$/.pico/}
 
 CLEANFILES := ${CLEANFILES} ${_CLEANLIBS} ${_OBJS} ${_OBJS_PROF} ${_OBJS_PIC}
 
+# XXX: RFCONF.h.autodep support
+.if "${RFCONF.h.autodep}" == yes
+${_OBJS} ${_OBJS_PROF} ${_OBJS_PIC}: ${RFCONF.h.file}
+.endif
+
 # lorder'd object files
 .if defined(LORDER)
 .  if !defined(TSORT)
