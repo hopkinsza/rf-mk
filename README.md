@@ -30,7 +30,7 @@ MAN =
 
 You can run `bmake` and it will create a program `main`.
 Even though no list of sources was specified,
-it defaulted to `main.c`
+it defaulted to `main.c`.
 Try `bmake -n install` to show what commands would be ran if you attempted to install.
 `bmake clean` to remove the built files.
 
@@ -42,29 +42,13 @@ More Sources
 ------------
 
 See `examples/prog/multisrc/`.
-To build, you will need development files for a `curses` library implementation,
-e.g. package `libncurses-dev` on debian.
 
-The variable `SRCS` was used to override the default of `main.c`;
-The file `draw.c` was compiled with additional `CPPFLAGS`;
-and the program was linked with `-lcurses`.
+The variable `SRCS` was used to override the default of `main.c`.
 
-- You can change the name to *install* the program as with `PROGNAME`.
-- Flags to the linker (technically passed to `${CC}` during linking)
-can be specified with `LDFLAGS`.
-- Additional linker objects can be specified with `LDADD` --
-typically used for libraries.
-  - To link with the utility and curses libraries: `LDADD += -lutil -lcurses`
+Theory
+------
 
-Multiple Programs
------------------
-
-See `examples/progs/*`.
-
-The traditional `4.4BSD` include files were designed to build one program per
-source directory.
-Most modern implementations have solved this limitation,
-and `rf-mk` is no exception.
+To understand the next sections, it is best to understand some compilation basics.
 
 Getting to an executable C program from the source `.c` files
 is performed in multiple steps:
@@ -82,16 +66,25 @@ is performed in multiple steps:
   - `ld(1)` or `cc`, linking object files together into an executable
   - one or multiple `.o` files -> executable
 
-In `rf-mk`,
-steps 1-3 are typically performed in a single step with `cc -c`.
-This simply uses a `make` suffix rule because
-there is a 1:1 correspondence between a `.c` file and its generated `.o` file.
-This leaves us with `.o` files that can actually be shared by multiple programs,
-you just have to link each one separately.
+Note that there is a 1:1 correspondence between a `.c` file
+and its corresponding `.i`, `.s`, and `.o` files.
+In fact, steps 1-3 are typically done in a single step with `cc -c`,
+which can take you straight from `.c` to `.o` while doing the other steps
+behind the scenes.
+(This is also why messing up and putting something that should be `CPPFLAGS`
+into `CFLAGS` or similar often still works).
+
+Multiple Programs
+-----------------
+
+See `examples/progs/simple/`.
 
 If you want to link up multiple programs,
-use the variable `PROGS` instead of `PROG`,
-and generally use the "prog-specific" versions of variables.
+simply use the variable `PROGS` instead of `PROG`,
+and generally use the *per-program* versions of variables.
+
+The point of this is to have multiple closely related programs that share `.o` files.
+The linker is called once for each program to link up.
 
 Examples:
 
@@ -119,7 +112,7 @@ MAN =
 .include <rf/prog.mk>
 ```
 
-Well, that doesn't seem very useful...
+Well, that's not very useful...
 `SRCS` has overridden the default value for both `alpha` and `bravo`.
 What you need is to use the *per-program* variant of `SRCS`:
 
@@ -135,37 +128,35 @@ MAN =
 .include <rf/prog.mk>
 ```
 
-Adding some flags:
+Compilation/Linking Flags
+-------------------------
 
-```make
-PROGS = alpha bravo
-SRCS.alpha = alpha.c util.c
-MAN =
+See `examples/prog/curses/`.
+To build, you will need development files for a `curses` library implementation,
+e.g. package `libncurses-dev` on debian.
 
-# both alpha and bravo should link with -lutil
-LDADD = -lutil
+The following variables are available for preprocessing/compilation:
 
-# only alpha needs -lcurses
-LDADD.alpha = -lcurses
+- `CPPFLAGS`: flags to the C preprocessor
+- `CFLAGS`: flags to the C compiler
 
-.include <rf/prog.mk>
-```
+They have per-file variants to specify additional options on a per-file basis.
+For example, to define the macro DEBUG for only `main.c`: `CPPFLAGS.main = -DDEBUG`.
 
-Essentially, you have the generic variables like `SRCS` and `LDADD`,
-and the specific ones like `SRCS.prog` and `LDADD.prog`.
-Sometimes the specific variable will *override* the generic variable, like `SRCS`,
-and sometimes it will be used *in addition to* the generic variable, like `LDADD`.
-See the man page for the behavior of specific variables.
-If neither the specific nor the generic variable is defined,
-it will default to something sensible.
+Linking is always done as its own stage in `rf-mk`.
+This way, if you change one file, you need only recompile its `.o`,
+then link up the program --
+avoiding the need to recompile unchanged files.
 
-Compilation
------------
+The following variables are available for linking:
 
-- `CFLAGS` for C compilation
-- `CPPFLAGS` for C preprocessing
+- `LDFLAGS`: flags to the linker
+- `LDADD`: additional linker objects, typically libraries
+  - To link with the utility and curses libraries: `LDADD += -lutil -lcurses`
 
-These have per-file variants.
+They have per-prog variants to specify additional options on a per-program basis.
+If you are just using `PROG`, you never need to use per-prog variants of anything,
+just use the generic `LDADD`, etc.
 
 PREFIX support
 --------------
