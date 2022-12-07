@@ -25,7 +25,7 @@ CFLAGS += ${COPTS}
 
 # determine whether or not to append to MAN variable,
 # used by rf/man.mk
-.if !defined(MAN)
+.if !defined(NOMAN) && !defined(MAN)
 _ADDMEN = yes
 .else
 _ADDMEN = no
