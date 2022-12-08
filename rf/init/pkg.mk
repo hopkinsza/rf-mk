@@ -2,8 +2,8 @@
 # Set up PKGVARS and PREFIXVARS.
 #
 
-.if !defined(_RF_PREFIX_MK_)
-_RF_PREFIX_MK_ = 1
+.if !defined(_RF_PKG_MK_)
+_RF_PKG_MK_ = 1
 
 #
 # PKGVARS.
@@ -99,4 +99,4 @@ CACHEDIR ?=	${VARBASE}/cache/${PKGDIRNAME}
 DBDIR ?=	${VARBASE}/db/${PKGDIRNAME}
 SPOOLDIR ?=	${VARBASE}/spool/${PKGDIRNAME}
 
-.endif # _RF_PREFIX_MK_
+.endif # _RF_PKG_MK_
