@@ -179,7 +179,7 @@ __libinstall: .USE
 #
 # static
 #
-.if ${RFLIB.static} != no
+.if ${RFLIB.static} == yes
 _PATH := ${DESTDIR}${RFLIB.staticdir}/lib${LIB}.a
 
 libinstall: ${_PATH}
@@ -191,7 +191,7 @@ ${_PATH}: __libinstall lib${LIB}.a
 #
 # prof
 #
-.if ${RFLIB.prof} != no
+.if ${RFLIB.prof} == yes
 _PATH := ${DESTDIR}${RFLIB.profdir}/lib${LIB}_p.a
 
 libinstall: ${_PATH}
@@ -203,7 +203,7 @@ ${_PATH}: __libinstall lib${LIB}_p.a
 #
 # pic
 #
-.if ${RFLIB.pic} != no
+.if ${RFLIB.pic} == yes
 _PATH := ${DESTDIR}${RFLIB.picdir}/lib${LIB}_pic.a
 
 libinstall: ${_PATH}
@@ -215,7 +215,7 @@ ${_PATH}: __libinstall lib${LIB}_pic.a
 #
 # shared
 #
-.if ${RFLIB.shared} != no
+.if ${RFLIB.shared} == yes
 _PATH := ${DESTDIR}${RFLIB.shareddir}/lib${LIB}.so.${SHLIB_FULLVERSION}
 
 libinstall: ${_PATH}

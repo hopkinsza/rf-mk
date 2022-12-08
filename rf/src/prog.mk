@@ -76,7 +76,7 @@ $o: ${RFCONF.h.file}
 
 # Figure out if we should link with CXX, based on source suffixes.
 _CXX = 0
-.  if ${MKCXX:Uyes} != no
+.  if ${MKCXX:Uyes} == yes
 .    for x in ${CXX_SUFFIXES}
 .      if !empty(SRCS.$p:M*$x)
 _CXX = 1

@@ -34,7 +34,7 @@ configinstall: .PHONY
 configall: $f
 b := ${CFILESBUILD.$f:U${CFILESBUILD}}
 
-.  if $b != no
+.  if $b == yes
 CLEANFILES := ${CLEANFILES} $f
 .  else
      # Don't allow it to be built without being added to CLEANFILES
@@ -55,7 +55,7 @@ CLEANFILES := ${CLEANFILES} $f
 # configexampleinstall
 #
 
-.  if ${RFCFILES.exampleinstall} != no
+.  if ${RFCFILES.exampleinstall} == yes
 
 _DIR := ${DESTDIR}${RFCFILES.examplesdir}
 _NAME := ${CFILESNAME.$f:U${CFILESNAME:U${f:T}}}

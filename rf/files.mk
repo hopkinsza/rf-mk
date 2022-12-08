@@ -29,7 +29,7 @@ filesinstall: .PHONY
 filesall: $f
 b := ${FILESBUILD.$f:U${FILESBUILD}}
 
-.  if $b != no
+.  if $b == yes
 CLEANFILES := ${CLEANFILES} $f
 .  else
      # Don't allow it to be built without being added to CLEANFILES

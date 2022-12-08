@@ -29,7 +29,7 @@ maninstall: .PHONY
 manall: $f
 b := ${MANBUILD.$f:U${MANBUILD}}
 
-.  if $b != no
+.  if $b == yes
 CLEANFILES := ${CLEANFILES} $f
 .  else
      # Don't allow it to be built without being added to CLEANFILES
