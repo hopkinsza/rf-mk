@@ -15,12 +15,16 @@ RFCONF.autodep ?= no
 # What variables to pass to the generated configs.
 RFCONF.vars ?= ${PKGVARS} ${PREFIXVARS}
 
-.if "${RFCONF.h}" == yes
+####
+#### RFCONF.h
+####
 
+RFCONF.h ?= no
 RFCONF.h.autodep ?= ${RFCONF.autodep}
+RFCONF.h.file ?= rfconf.h
 RFCONF.h.vars ?= ${RFCONF.vars}
 
-RFCONF.h.file ?= rfconf.h
+.if "${RFCONF.h}" == yes
 
 #
 # Build variable RFCONF.h.cmd, which contains shell commands to create the file.
