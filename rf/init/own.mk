@@ -89,6 +89,6 @@ INSTALL_LINK ?=		${INSTALL} -l h
 INSTALL_SYMLINK ?=	${INSTALL} -l s
 
 # used to make sure a directory we're installing to exists
-ENSURE_DIR ?=		[ ! -d "${.TARGET:H}/" ] && ${INSTALL_DIR} "${.TARGET:H}/"
+ENSURE_DIR ?=		[ -d "${.TARGET:H}/" ] || ${INSTALL_DIR} "${.TARGET:H}/"
 
 .endif # _RF_OWN_MK_
