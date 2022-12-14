@@ -24,7 +24,7 @@ RFCONF.h.autodep ?= ${RFCONF.autodep}
 RFCONF.h.file ?= rfconf.h
 RFCONF.h.vars ?= ${RFCONF.vars}
 
-.if "${RFCONF.h}" == yes
+.if ${RFCONF.h} == yes
 
 #
 # Build variable RFCONF.h.cmd, which contains shell commands to create the file.
