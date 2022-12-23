@@ -23,14 +23,6 @@ PROGS = ${PROG}
 # for historical reasons
 CFLAGS += ${COPTS}
 
-# determine whether or not to append to MAN variable,
-# used by rf/man.mk
-.if !defined(NOMAN) && !defined(MAN)
-_ADDMEN = yes
-.else
-_ADDMEN = no
-.endif
-
 #
 # Add rules to build each program.
 #
@@ -40,10 +32,6 @@ progall: .PHONY
 
 .for p in ${PROGS}
 CLEANFILES := ${CLEANFILES} $p
-
-.if ${_ADDMEN} == yes
-MAN += $p.1
-.endif
 
 SRCS.$p ?= ${SRCS:U$p.c}
 PROGNAME.$p ?= ${PROGNAME:U$p}
@@ -58,9 +46,9 @@ _OBJS.$p =
 .    endif
 
 # A prog depends on the source file indirectly through the `.o';
-# do a sanity check that the source actually exists.
-.    if !exists($s)
-.      error source file does not exist: $s
+# do a sanity check that the source exists or has a target to make it.
+.    if !exists($s) && !target($s)
+.      error source file does not exist and has no target to make it: $s
 .    endif
 
 o := ${s:R:S/$/.o/}

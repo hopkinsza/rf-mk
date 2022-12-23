@@ -21,6 +21,21 @@ install: maninstall
 maninstall: .PHONY
 
 #
+# Default value for MAN based on PROG/PROGS.
+# This is an odd case of using variables outside of this file's normal scope.
+#
+
+.if !defined(MAN) && !defined(NOMAN)
+.  if !empty(PROG)
+MAN += $(PROG).1
+.  elif !empty(PROGS)
+.    for p in ${PROGS}
+MAN += $p.1
+.    endfor
+.  endif
+.endif
+
+#
 # Build.
 #
 
