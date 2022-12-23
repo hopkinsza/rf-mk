@@ -50,6 +50,47 @@ ${RFCONF.h.file}:
 	@exec >${.TARGET}; ${RFCONF.h.cmd}
 
 CLEANFILES := ${CLEANFILES} ${RFCONF.h.file}
+.endif
+
+####
+#### RFCONF.sub
+####
+
+RFCONF.sub ?=
+RFCONF.sub.vars ?= ${RFCONF.vars}
+
+.if !empty(RFCONF.sub)
+
+# generate the simple sed command
+RFCONF.sub.sedcmd = sed
+.  for i in ${RFCONF.sub.vars}
+RFCONF.sub.sedcmd += -e 's,RF_$i,${$i},g'
+.  endfor
+
+.  for f in ${RFCONF.sub}
+
+# Due to the possibility of accidentally cleaning a non-generated file,
+# we set the permissions of these generated files to 444.
+# If one of the files already exists and does not have permissions of 444,
+# give an error and abort.
+x != [ -e '$f' ] && echo yes || echo no
+.    if "$x" == yes
+# check perms... should be 444
+y != ls -l '$f' | cut -d' ' -f1
+.      if "$y" != "-r--r--r--"
+.        error file '$f' already exists and does not seem to be generated, not overwriting
+.      endif
+.    endif
+
+$f: sub_$f
+	@${RFPRINT} 'create ${.TARGET}'
+	@rm -f ${.TARGET}
+	@${RFCONF.sub.sedcmd} ${.ALLSRC} >${.TARGET}
+	@chmod 0444 ${.TARGET}
+
+CLEANFILES := ${CLEANFILES} $f
+
+.  endfor
 
 .endif
 

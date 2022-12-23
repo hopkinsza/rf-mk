@@ -228,29 +228,52 @@ The typical use is to export
 variables into a file that can then be included by source code.
 .Ss Variables
 .Bl -tag -width Ds
-.It RFCONF.autodep
-Try to intelligently make generated files
+.It RFCONF.autodep [no]
+If yes, try to intelligently make generated files
 .Pq e.g. Pa *.o
 depend on the generated
 build-time config files
 .Pq e.g. Pa rfconf.h
 so you don't have to worry about specifying it yourself.
-.It RFCONF.vars
+.It RFCONF.vars [${PKGVARS} ${PREFIXVARS}]
 .Nm
 variables to export.
-.It RFCONF.h
-A filename, typically
-.Pa rfconf.h .
-If defined, define the shell commands to generate the file,
+.It RFCONF.h [no]
+If yes,
+define the shell commands to generate the file
+.Pa rfconf.h ,
 which is a dump of
 .Ql RFCONF.vars
 variables in C header file format using
 .Ql #define .
-.It RFCONF.h.autodep
-.Ql RFCONF.autodep
-override for
-.Ql RFCONF.h
-only.
+.It RFCONF.sub []
+A list of files.
+For each file
+.Ql f ,
+expect a file
+.Ql sub_f
+to exist.
+.Nm
+will create the rule to transform
+.Ql sub_f
+to
+.Ql f
+using basic text substitution of ${RFCONF.vars} variables,
+where the variable name is prefixed by
+.Dq RF_
+in the
+.Ql sub_f
+file.
+For example, you may want to convert
+.Pa sub_main.1
+to
+.Pa main.1 .
+In this case, the text
+.Dq RF_PREFIX
+in
+.Pa main.1
+may be replaced with
+.Dq /usr/local .
 .El
 .Ss Examples
 Just generate the config.
