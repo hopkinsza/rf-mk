@@ -93,9 +93,17 @@ and where compiled programs look for files.
 You cannot change this, but it is documented for completeness.
 It includes the following variables.
 .It PREFIX [/usr/local]
-Used
+Convenient variable used
 .Sy only
 for constructing default values for LOCALBASE, ETCBASE, and VARBASE.
+However, the prefixes
+.Pa /
+and
+.Pa /usr
+are handled specially, see the code for this.
+.Bf Sy
+Do not look for files relative to PREFIX.
+.Ef
 .El
 .Pp
 LOCALBASE:

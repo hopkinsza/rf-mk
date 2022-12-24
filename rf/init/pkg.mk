@@ -30,6 +30,26 @@ PREFIXVARS = PREFIX
 PREFIX ?= /usr/local
 
 #
+# Handle PREFIX=/ and PREFIX=/usr.
+#
+
+# PREFIX=/ is actually faked.
+# Almost everything lives under /usr, so just set PREFIX=/usr.
+# But install programs to /bin and libraries to /lib.
+.if ${PREFIX} == /
+PREFIX = /usr
+BINDIR ?= /bin
+LIBDIR ?= /lib
+.endif
+
+# As for /usr, it is actually usable as a full PREFIX,
+# just lacking ETCBASE and VARBASE.
+.if ${PREFIX} == /usr
+ETCBASE ?= /etc
+VARBASE ?= /var
+.endif
+
+#
 # The three base directories to install to.
 # LOCALBASE: static data/files
 # ETCBASE: configuration files
@@ -63,9 +83,8 @@ MANDIR ?=	${LOCALBASE}/share/man
 #
 # DOCDIR: misc documentation
 # EXAMPLESDIR: usage examples
-# LIBDATADIR: ?
+# LIBDATADIR: architecture-specific static data
 # SHAREDIR: generic static data
-# TODO: libdata vs share?
 #
 
 PREFIXVARS += DOCDIR \
