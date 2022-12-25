@@ -46,7 +46,7 @@ RFCONF.h.cmd += echo ''; \
 #
 
 ${RFCONF.h.file}:
-	@${RFPRINT} 'create ${.TARGET}'
+	@${RFPRINT.tg.create}
 	@exec >${.TARGET}; ${RFCONF.h.cmd}
 
 CLEANFILES := ${CLEANFILES} ${RFCONF.h.file}
@@ -83,7 +83,7 @@ y != ls -l '$f' | cut -d' ' -f1
 .    endif
 
 $f: sub_$f
-	@${RFPRINT} 'create ${.TARGET}'
+	@${RFPRINT.tg.create}
 	@rm -f ${.TARGET}
 	@${RFCONF.sub.sedcmd} ${.ALLSRC} >${.TARGET}
 	@chmod 0444 ${.TARGET}

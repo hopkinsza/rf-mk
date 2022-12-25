@@ -83,7 +83,8 @@ maninstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
-	${ENSURE_DIR}
+	@${ENSURE_DIR}
+	@${RFPRINT.tg.install}
 	${INSTALL_FILE} \
 		-o ${MANOWN.${.ALLSRC}:U${MANOWN}} \
 		-g ${MANGRP.${.ALLSRC}:U${MANGRP}} \

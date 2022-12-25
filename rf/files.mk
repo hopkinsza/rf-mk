@@ -56,7 +56,8 @@ filesinstall: ${_PATH}
 # Files can be in a subdir.
 # You can use a slash in a variable name like FILESOWN.files/file=root.
 ${_PATH}: $f
-	${ENSURE_DIR}
+	@${ENSURE_DIR}
+	@${RFPRINT.tg.install}
 	${INSTALL_FILE} \
 		-o ${FILESOWN.${.ALLSRC}:U${FILESOWN}} \
 		-g ${FILESGRP.${.ALLSRC}:U${FILESGRP}} \

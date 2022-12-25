@@ -77,6 +77,7 @@ _CXX = 1
 # LDSTATIC can be overridden per-program.
 # LDFLAGS and LDADD can be appended to per-program.
 $p: ${_OBJS.$p}
+	@${RFPRINT.tg.link}
 .if ${_CXX} == 0
 	${CC} \
 		${LDSTATIC.$p:U${LDSTATIC}} \
@@ -117,7 +118,8 @@ proginstall: ${_PATH}
 .PRECIOUS: ${_PATH}
 
 ${_PATH}: $f
-	${ENSURE_DIR}
+	@${ENSURE_DIR}
+	@${RFPRINT.tg.install}
 	${INSTALL_FILE} \
 		-o ${BINOWN.${.ALLSRC}:U${BINOWN}} \
 		-g ${BINGRP.${.ALLSRC}:U${BINGRP}} \

@@ -22,6 +22,7 @@ CXX_SUFFIXES ?= .cc .cpp .cxx
 .SUFFIXES: .c ${CXX_SUFFIXES} .o .pico .po
 
 .c.o:
+	@${RFPRINT.tg.compile}
 	${CC} -c \
 		${CFLAGS} ${CPPFLAGS} \
 		${CFLAGS.${.IMPSRC:R}} \
@@ -29,6 +30,7 @@ CXX_SUFFIXES ?= .cc .cpp .cxx
 		-o ${.TARGET} ${.IMPSRC}
 
 .c.pico:
+	@${RFPRINT.tg.compile}
 	${CC} -c ${CFLAGS_PIC} \
 		${CFLAGS} ${CPPFLAGS} \
 		${CFLAGS.${.IMPSRC:R}} \
@@ -36,6 +38,7 @@ CXX_SUFFIXES ?= .cc .cpp .cxx
 		-o ${.TARGET} ${.IMPSRC}
 
 .c.po:
+	@${RFPRINT.tg.compile}
 	${CC} -c ${CFLAGS_PROF} \
 		${CFLAGS} ${CPPFLAGS} \
 		${CFLAGS.${.IMPSRC:R}} \
@@ -44,6 +47,7 @@ CXX_SUFFIXES ?= .cc .cpp .cxx
 
 .for i in ${CXX_SUFFIXES}
 $i.o:
+	@${RFPRINT.tg.compile}
 	${CXX} -c \
 		${CXXFLAGS} ${CPPFLAGS} \
 		${CXXFLAGS.${.IMPSRC:R}} \
@@ -51,6 +55,7 @@ $i.o:
 		-o ${.TARGET} ${.IMPSRC}
 
 $i.pico:
+	@${RFPRINT.tg.compile}
 	${CXX} -c ${CFLAGS_PIC} \
 		${CXXFLAGS} ${CPPFLAGS} \
 		${CXXFLAGS.${.IMPSRC:R}} \
@@ -58,6 +63,7 @@ $i.pico:
 		-o ${.TARGET} ${.IMPSRC}
 
 $i.po:
+	@${RFPRINT.tg.compile}
 	${CXX} -c ${CFLAGS_PROF} \
 		${CXXFLAGS} ${CPPFLAGS} \
 		${CXXFLAGS.${.IMPSRC:R}} \

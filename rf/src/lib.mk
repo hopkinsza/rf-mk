@@ -130,19 +130,19 @@ _LOBJS_PIC	= ${_OBJS_PIC}
 .endif
 
 lib${LIB}.a: ${_OBJS}
-	@${RFPRINT} build standard ${LIB} library
+	@${RFPRINT.build} standard ${LIB} library
 	@rm -f ${.TARGET}
 	${AR} crD ${.TARGET} ${_LOBJS}
 	${RANLIB} ${.TARGET}
 
 lib${LIB}_p.a: ${_OBJS_PROF}
-	@${RFPRINT} build profiled ${LIB} library
+	@${RFPRINT.build} profiled ${LIB} library
 	@rm -f ${.TARGET}
 	${AR} crD ${.TARGET} ${_LOBJS_PROF}
 	${RANLIB} ${.TARGET}
 
 lib${LIB}_pic.a: ${_OBJS_PIC}
-	@${RFPRINT} build PIC ${LIB} library
+	@${RFPRINT.build} PIC ${LIB} library
 	@rm -f ${.TARGET}
 	${AR} crD ${.TARGET} ${_LOBJS_PIC}
 	${RANLIB} ${.TARGET}
@@ -152,7 +152,7 @@ lib${LIB}_pic.a: ${_OBJS_PIC}
 # Should specify the same -f{pic,PIC} and model suboptions used for compilation.
 # TODO: model suboptions (CPUFLAGS?)
 lib${LIB}.so.${SHLIB_FULLVERSION}: ${_OBJS_PIC}
-	@${RFPRINT} build shared ${LIB} library
+	@${RFPRINT.build} shared ${LIB} library
 	@rm -f ${.TARGET}
 	${CC} -shared -Wl,-soname,lib${LIB}.so.${SHLIB_SOVERSION} \
 		${CFLAGS_PIC} \
@@ -169,7 +169,8 @@ install: libinstall
 libinstall: .PHONY
 
 __libinstall: .USE
-	${ENSURE_DIR}
+	@${ENSURE_DIR}
+	@${RFPRINT.tg.install}
 	${INSTALL_FILE} \
 		-o ${LIBOWN} \
 		-g ${LIBGRP} \
