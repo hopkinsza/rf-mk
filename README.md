@@ -227,6 +227,7 @@ You can use the include files as-is with `make`'s `-m` option
 or the environment variable `MAKESYSPATH`.
 
 Alternatively, install them to `/usr/share/mk` by running `./install.sh` as root.
+To preview the commands that would be run, use `./install.sh -n`.
 
 The man page `./rf-mk.7` has in-depth documentation.
 You can view it with `man ./rf-mk.7`.

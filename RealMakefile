@@ -1,7 +1,0 @@
-FILES != find rf -type f
-
-.for f in ${FILES}
-FILESDIR.$f = /usr/share/mk/${f:H}
-.endfor
-
-.include <rf/files.mk>
