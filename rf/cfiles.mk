@@ -29,7 +29,7 @@ configinstall: .PHONY
 # Build.
 #
 
-.for f in ${CFILESS}
+.for f in ${CFILES}
 
 configall: $f
 b := ${CFILESBUILD.$f:U${CFILESBUILD}}
