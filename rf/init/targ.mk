@@ -8,6 +8,7 @@ _RF_TARG_MK_ = 1
 # TODO: tags
 TARGETS += all \
 	clean cleandir \
+	includes \
 	install
 
 .for t in ${TARGETS}

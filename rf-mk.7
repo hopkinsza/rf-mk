@@ -357,6 +357,26 @@ and expect there to be a rule to build them.
 .El
 .\"
 .\"
+.Sh rf/incs.mk
+Build and install include files.
+.Ss Targets
+.Bl -tag -width Ds
+.It incsall
+Build the files.
+.It includes
+Install the files.
+This is not hooked into the main
+.Ql all
+target.
+.El
+.Ss Variables
+Identical to
+.In rf/files.mk
+but with INCS instead of FILES.
+The default directory to install to is
+.Pa ${LOCALBASE}/include .
+.\"
+.\"
 .Sh rf/lib.mk
 Build and install different types of C libraries.
 This includes the typical
