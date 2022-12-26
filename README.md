@@ -17,6 +17,9 @@ complexity, and portability goals.
 I thought I could make one that's simple, clean, and with the features I want
 to build my projects with minimal fuss.
 
+Note that all examples use the command `make`;
+you may need to substitute this for `bmake` depending on your setup.
+
 Basic Usage
 -----
 
@@ -31,11 +34,11 @@ MAN =
 .include <rf/prog.mk>
 ```
 
-You can run `bmake` and it will create a program `main`.
+You can run `make` and it will create a program `main`.
 Even though no list of sources was specified,
 it defaulted to `main.c`.
-Try `bmake -n install` to show what commands would be ran if you attempted to install.
-`bmake clean` to remove the built files.
+Try `make -n install` to show what commands would be ran if you attempted to install.
+`make clean` to remove the built files.
 
 Note that you need the line `MAN =`,
 otherwise `<rf/prog.mk>` would give it a default of `main.1`.
