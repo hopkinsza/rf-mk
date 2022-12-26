@@ -29,7 +29,7 @@ It simply has the following `Makefile`:
 
 ```make
 PROG = main
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>
 ```
@@ -40,8 +40,10 @@ it defaulted to `main.c`.
 Try `make -n install` to show what commands would be ran if you attempted to install.
 `make clean` to remove the built files.
 
-Note that you need the line `MAN =`,
+Note that you need the line `NOMAN =`,
 otherwise `<rf/prog.mk>` would give it a default of `main.1`.
+You could also just define `MAN` to be empty, e.g. `MAN =`,
+but defining `NOMAN` is traditional.
 Harassing you for not having a man page has been a feature since `4.4BSD`!
 
 More Sources
@@ -101,7 +103,7 @@ Examples:
 #
 
 PROGS = alpha bravo
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>
 ```
@@ -113,7 +115,7 @@ MAN =
 
 PROGS = alpha bravo
 SRCS = alpha.c util.c
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>
 ```
@@ -129,7 +131,7 @@ What you need is to use the *per-program* variant of `SRCS`:
 
 PROGS = alpha bravo
 SRCS.alpha = alpha.c util.c
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>
 ```

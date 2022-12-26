@@ -5,6 +5,6 @@ RFCONF.h = yes
 RFCONF.autodep = yes
 
 PROG = main
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>

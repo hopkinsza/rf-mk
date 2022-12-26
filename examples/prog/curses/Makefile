@@ -1,6 +1,6 @@
 PROG = main
 SRCS = draw.c main.c
-MAN =
+NOMAN =
 
 # flags to the C compiler for every file
 CFLAGS = -pipe

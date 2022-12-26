@@ -1,5 +1,5 @@
 PROG = main
 SRCS = main.c util.c
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>

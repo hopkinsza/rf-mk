@@ -1,4 +1,4 @@
 PROG = main
-MAN =
+NOMAN =
 
 .include <rf/prog.mk>
