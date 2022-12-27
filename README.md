@@ -38,6 +38,7 @@ You can run `make` and it will create a program `main`.
 Even though no list of sources was specified,
 it defaulted to `main.c`.
 Try `make -n install` to show what commands would be ran if you attempted to install.
+To preview prefix support, you can also try `make -n install PREFIX=/opt`.
 `make clean` to remove the built files.
 
 Note that you need the line `NOMAN =`,
