@@ -11,4 +11,5 @@ else
 	make=make
 fi
 
-exec $make -m . -f Install.mk "$@" install
+rm -rf /usr/share/mk/rf
+exec $make -m /usr/share/mk -m . -f Install.mk "$@" install
