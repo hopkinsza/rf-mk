@@ -10,4 +10,6 @@ FILES != find rf -type f
 FILESDIR.$f = /usr/share/mk/${f:H}
 .endfor
 
-.include <rf/files.mk>
+MAN = rf-mk.7
+
+.include <rf/all.mk>
