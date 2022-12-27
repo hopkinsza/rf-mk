@@ -194,10 +194,10 @@ All `rf/conf.mk` really does is dump `rf-mk` variables into a file.
 Currently, this can only be a `.h` C header file,
 but other styles may be supported in the future.
 
-Set `RFCONF.h = yes` to gain the capability to generate the file `rfconf.h`.
+Set `CONF.h = yes` to gain the capability to generate the file `rfconf.h`.
 You can then make the appropriate `.o` files depend on `rfconf.h`,
 and it will be generated.
-Alternatively, set `RFCONF.autodep = yes` to have every `.o` depend on it automatically.
+Alternatively, set `CONF.autodep = yes` to have every `.o` depend on it automatically.
 
 See `examples/pkg/*`.
 
@@ -207,7 +207,7 @@ and where you actually installed to if you're not careful:
 
 ```
 $ make
-(-> generates config.h with PREFIX=/usr/local, then compiles C code using it)
+(-> generates rfconf.h with PREFIX=/usr/local, then compiles C code using it)
 $ make PREFIX=/opt install
 (-> the program is already compiled, and it is installed to /opt/bin)
 ```
