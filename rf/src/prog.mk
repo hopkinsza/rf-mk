@@ -55,9 +55,9 @@ o := ${s:R:S/$/.o/}
 CLEANFILES := ${CLEANFILES} $o
 _OBJS.$p := ${_OBJS.$p} $o
 
-# XXX: RFCONF.h.autodep support
-.    if "${RFCONF.h.autodep}" == yes
-$o: ${RFCONF.h.file}
+# XXX: CONF.h.autodep support
+.    if "${CONF.h.autodep}" == yes
+$o: ${CONF.h.file}
 .    endif
 
 .  endfor

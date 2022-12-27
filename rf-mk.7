@@ -12,6 +12,15 @@
 .Sh DESCRIPTION
 There are many files that each do something.
 Default values for variables are listed in brackets.
+.Pp
+Variables that may be useful to define globally have a name like
+.Ql RF<filename>.* .
+For example,
+.Ql RFLIB.prof
+controls whether to build/install the profiled versions of libraries.
+These are like NetBSD's
+.Ql MK*
+variables.
 .\"
 .\"
 .Sh rf/init.mk
@@ -234,25 +243,25 @@ The typical use is to export
 variables into a file that can then be included by source code.
 .Ss Variables
 .Bl -tag -width Ds
-.It RFCONF.autodep [no]
+.It CONF.autodep [no]
 If yes, try to intelligently make generated files
 .Pq e.g. Pa *.o
 depend on the generated
 build-time config files
 .Pq e.g. Pa rfconf.h
 so you don't have to worry about specifying it yourself.
-.It RFCONF.vars [${PKGVARS} ${PREFIXVARS}]
+.It CONF.vars [${PKGVARS} ${PREFIXVARS}]
 .Nm
 variables to export.
-.It RFCONF.h [no]
+.It CONF.h [no]
 If yes,
 define the shell commands to generate the file
 .Pa rfconf.h ,
 which is a dump of
-.Ql RFCONF.vars
+.Ql CONF.vars
 variables in C header file format using
 .Ql #define .
-.It RFCONF.sub []
+.It CONF.sub []
 A list of files.
 For each file
 .Ql f ,
@@ -264,7 +273,7 @@ will create the rule to transform
 .Ql sub_f
 to
 .Ql f
-using basic text substitution of ${RFCONF.vars} variables,
+using basic text substitution of ${CONF.vars} variables,
 where the variable name is prefixed by
 .Dq RF_
 in the
@@ -290,7 +299,7 @@ must be included, not just
 on its own,
 otherwise assumptions made by the code are broken.
 .Bd -literal -offset Ds
-RFCONF.h = rfconf.h
+CONF.h = yes
 
 all: rfconf.h
 
@@ -302,8 +311,8 @@ Compiles a C program
 that uses the line
 .Ql #include "rfconf.h"
 .Bd -literal -offset Ds
-RFCONF.autodep = yes
-RFCONF.h = rfconf.h
+CONF.autodep = yes
+CONF.h = yes
 
 PROG = main
 

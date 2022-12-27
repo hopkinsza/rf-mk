@@ -10,64 +10,64 @@
 _RF_CONF_MK_ = 1
 
 # Try to automatically make files depend on the generated configs.
-RFCONF.autodep ?= no
+CONF.autodep ?= no
 
 # What variables to pass to the generated configs.
-RFCONF.vars ?= ${PKGVARS} ${PREFIXVARS}
+CONF.vars ?= ${PKGVARS} ${PREFIXVARS}
 
 ####
-#### RFCONF.h
+#### CONF.h
 ####
 
-RFCONF.h ?= no
-RFCONF.h.autodep ?= ${RFCONF.autodep}
-RFCONF.h.file ?= rfconf.h
-RFCONF.h.vars ?= ${RFCONF.vars}
+CONF.h ?= no
+CONF.h.autodep ?= ${CONF.autodep}
+CONF.h.file ?= rfconf.h
+CONF.h.vars ?= ${CONF.vars}
 
-.if ${RFCONF.h} == yes
+.if ${CONF.h} == yes
 
 #
-# Build variable RFCONF.h.cmd, which contains shell commands to create the file.
+# Build variable CONF.h.cmd, which contains shell commands to create the file.
 #
 
-RFCONF.h.cmd = echo '\#ifndef _RF_CONF_H_'; \
+CONF.h.cmd = echo '\#ifndef _RF_CONF_H_'; \
 	echo '\#define _RF_CONF_H_'; \
 	echo '';
 
-.for i in ${RFCONF.h.vars}
-RFCONF.h.cmd += echo '\#define $i "${$i}"';
+.for i in ${CONF.h.vars}
+CONF.h.cmd += echo '\#define $i "${$i}"';
 .endfor
 
-RFCONF.h.cmd += echo ''; \
+CONF.h.cmd += echo ''; \
 	echo '\#endif // _RF_CONF_H_';
 
 #
 # now commands for generating the config
 #
 
-${RFCONF.h.file}:
+${CONF.h.file}:
 	@${RFPRINT.tg.create}
-	@exec >${.TARGET}; ${RFCONF.h.cmd}
+	@exec >${.TARGET}; ${CONF.h.cmd}
 
-CLEANFILES := ${CLEANFILES} ${RFCONF.h.file}
+CLEANFILES := ${CLEANFILES} ${CONF.h.file}
 .endif
 
 ####
-#### RFCONF.sub
+#### CONF.sub
 ####
 
-RFCONF.sub ?=
-RFCONF.sub.vars ?= ${RFCONF.vars}
+CONF.sub ?=
+CONF.sub.vars ?= ${CONF.vars}
 
-.if !empty(RFCONF.sub)
+.if !empty(CONF.sub)
 
 # generate the simple sed command
-RFCONF.sub.sedcmd = sed
-.  for i in ${RFCONF.sub.vars}
-RFCONF.sub.sedcmd += -e 's,RF_$i,${$i},g'
+CONF.sub.sedcmd = sed
+.  for i in ${CONF.sub.vars}
+CONF.sub.sedcmd += -e 's,RF_$i,${$i},g'
 .  endfor
 
-.  for f in ${RFCONF.sub}
+.  for f in ${CONF.sub}
 
 # Due to the possibility of accidentally cleaning a non-generated file,
 # we set the permissions of these generated files to 444.
@@ -85,7 +85,7 @@ y != ls -l '$f' | cut -d' ' -f1
 $f: sub_$f
 	@${RFPRINT.tg.create}
 	@rm -f ${.TARGET}
-	@${RFCONF.sub.sedcmd} ${.ALLSRC} >${.TARGET}
+	@${CONF.sub.sedcmd} ${.ALLSRC} >${.TARGET}
 	@chmod 0444 ${.TARGET}
 
 CLEANFILES := ${CLEANFILES} $f
