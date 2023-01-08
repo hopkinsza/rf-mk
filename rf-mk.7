@@ -237,10 +237,12 @@ Remove ${CLEANDIRFILES}.
 .\"
 .\"
 .Sh rf/conf.mk
-Handles build-time configuration generation.
-The typical use is to export
+Handles build-time configuration.
+The point is to make
 .Nm
-variables into a file that can then be included by source code.
+variables accessible to your code and files.
+This can be by generating a file that is included by source code,
+or by text substitution.
 .Ss Variables
 .Bl -tag -width Ds
 .It CONF.autodep [no]
@@ -257,67 +259,76 @@ variables to export.
 If yes,
 define the shell commands to generate the file
 .Pa rfconf.h ,
-which is a dump of
-.Ql CONF.vars
+which is a dump of ${CONF.vars}
 variables in C header file format using
 .Ql #define .
-.It CONF.sub []
-A list of files.
-For each file
-.Ql f ,
-expect a file
-.Ql sub_f
-to exist.
-.Nm
-will create the rule to transform
-.Ql sub_f
-to
-.Ql f
-using basic text substitution of ${CONF.vars} variables,
-where the variable name is prefixed by
-.Dq RF_
-in the
-.Ql sub_f
-file.
-For example, you may want to convert
-.Pa sub_main.1
-to
-.Pa main.1 .
-In this case, the text
-.Dq RF_PREFIX
-in
-.Pa main.1
-may be replaced with
-.Dq /usr/local .
-.El
-.Ss Examples
-Just generate the config.
-Note that
-.In rf/all.mk
-must be included, not just
-.In rf/conf.mk
-on its own,
-otherwise assumptions made by the code are broken.
+.Pp
+The following is an example
+.Pa Makefile
+that makes
+.Pa rfconf.h
+capable of being generated.
+.Pa rfconf.h
+is not hooked into the
+.Ql all
+target, but you could build it with
+.Dq make rfconf.h .
+.Pp
+.Pa Makefile :
 .Bd -literal -offset Ds
 CONF.h = yes
-
-all: rfconf.h
 
 \&.include <rf/all.mk>
 .Ed
+.It CONF.sub []
+A list of files to generate by using simple
+.Xr sed 1
+text substitution to replace
+${CONF.vars} variable names with their values.
+For each file
+.Pa f ,
+expect an input file
+.Pa ${f}.in
+to exist.
+In the input file, the variable name must be prefixed by
+.Ql RF_
+to minimize naming collisions.
+For example, you may want to generate a
+.Pa blah.sh
+that uses
+.Nm
+variables to look for files.
+You could use the following setup:
 .Pp
-Compiles a C program
-.Pa main.c
-that uses the line
-.Ql #include "rfconf.h"
+.Pa Makefile :
 .Bd -literal -offset Ds
-CONF.autodep = yes
-CONF.h = yes
+CONF.sub = blah.sh
 
-PROG = main
-
-\&.include <rf/prog.mk>
+# use all.mk, not just conf.mk,
+# so we get 'clean' target implementation
+\&.include <rf/all.mk>
 .Ed
+.Pp
+.Pa blah.sh.in :
+.Bd -literal -offset Ds
+#!/bin/sh
+
+echo 'config directory is RF_ETCDIR'
+.Ed
+.Pp
+With this setup,
+.Pa blah.sh
+is capable of being generated.
+It is not hooked into the
+.Ql all
+target, but you could build it with
+.Dq make blah.sh .
+.Pp
+Actually, the input filename prefix and suffix can be configured with
+${CONF.sub.file_prefix} and ${CONF.sub.file_suffix},
+and the variable prefix and suffix in the input file can be configured with
+${CONF.sub.var_prefix} and ${CONF.sub.var_suffix}.
+.El
 .\"
 .\"
 .Sh rf/files.mk
