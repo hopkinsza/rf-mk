@@ -104,7 +104,7 @@ It includes the following variables.
 .It PREFIX [/usr/local]
 Convenient variable used
 .Sy only
-for constructing default values for LOCALBASE, ETCBASE, and VARBASE.
+for constructing default values of EXECBASE, FILEBASE, ETCBASE, and VARBASE.
 However, the prefixes
 .Pa /
 and
@@ -115,27 +115,40 @@ Do not look for files relative to PREFIX.
 .Ef
 .El
 .Pp
-LOCALBASE:
+EXECBASE:
 .Bl -tag -width Ds -offset 3n
-.It LOCALBASE [${PREFIX}]
+.It EXECBASE [${PREFIX}]
+Base directory for binaries and libraries.
+Everything here may be architecture-dependent.
+.It BINDIR [${EXECBASE}/bin]
+Normal binaries and scripts.
+.It SBINDIR [${EXECBASE}/sbin]
+Executables not typically used by a regular user,
+typically for system administration.
+.It LIBDIR [${EXECBASE}/lib]
+Libraries.
+.It LIBEXECDIR [${EXECBASE}/libexec/${PKGDIRNAME}]
+Helper executables that are not meant to be executed directly by users.
+.It LIBDATADIR [${EXECBASE}/libdata/${PKGDIRNAME}]
+Static data files.
+This is largely interchangeable with ${SHAREDIR},
+except they are allowed to be machine-dependent.
+This includes firmware.
+.El
+.Pp
+FILEBASE:
+.Bl -tag -width Ds -offset 3n
+.It FILEBASE [${PREFIX}]
 Base directory for static data/files.
-This includes binaries, libraries, and data files.
-.It BINDIR [${LOCALBASE}/bin]
-Where to install binaries.
-.It INCDIR [${LOCALBASE}/include]
-Where to install C include files.
-.It LIBDIR [${LOCALBASE}/lib]
-Where to install libraries.
-.It MANDIR [${LOCALBASE}/share/man]
-Where to install man pages.
-.It DOCDIR [${LOCALBASE}/share/doc/${PKG}]
+.It DOCDIR [${FILEBASE}/share/doc/${PKG}]
 Misc documentation files.
-.It EXAMPLESDIR [${LOCALBASE}/share/examples/${PKG}]
+.It EXAMPLESDIR [${FILEBASE}/share/examples/${PKG}]
 Example files.
-.It LIBDATADIR [${LOCALBASE}/libdata/${PKG}]
-Static, architecture-dependent data files.
-Not used very often, but includes firmware.
-.It SHAREDIR [${LOCALBASE}/share/${PKG}]
+.It INCDIR [${FILEBASE}/include]
+C include files.
+.It MANDIR [${FILEBASE}/share/man]
+Man pages.
+.It SHAREDIR [${FILEBASE}/share/${PKG}]
 Static, architecture-independent data files.
 .El
 .Pp
@@ -391,8 +404,6 @@ target.
 Identical to
 .In rf/files.mk
 but with INCS instead of FILES.
-The default directory to install to is
-.Pa ${LOCALBASE}/include .
 .\"
 .\"
 .Sh rf/lib.mk

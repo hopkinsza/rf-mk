@@ -33,13 +33,10 @@ PREFIX ?= /usr/local
 # Handle PREFIX=/ and PREFIX=/usr.
 #
 
-# PREFIX=/ is actually faked.
 # Almost everything lives under /usr, so just set PREFIX=/usr.
-# But install programs to /bin and libraries to /lib.
 .if ${PREFIX} == /
 PREFIX = /usr
-BINDIR ?= /bin
-LIBDIR ?= /lib
+EXECBASE ?=
 .endif
 
 # As for /usr, it is actually usable as a full PREFIX,
@@ -50,52 +47,59 @@ VARBASE ?= /var
 .endif
 
 #
-# The three base directories to install to.
-# LOCALBASE: static data/files
+# The four base directories to install to.
+# EXECBASE: binaries and libraries
+# FILEBASE: static data/files
 # ETCBASE: configuration files
 # VARBASE: dynamic (variable) data/files
 #
 
-PREFIXVARS += LOCALBASE \
+PREFIXVARS += EXECBASE \
+	FILEBASE \
 	ETCBASE \
 	VARBASE
 
-LOCALBASE ?=	${PREFIX}
+EXECBASE ?=	${PREFIX}
+FILEBASE ?=	${PREFIX}
 ETCBASE ?=	${PREFIX}/etc
 VARBASE ?=	${PREFIX}/var
 
 #
-# LOCALBASE traditional directories.
+# EXECBASE.
 #
 
 PREFIXVARS += BINDIR \
-	INCDIR \
+	SBINDIR \
 	LIBDIR \
-	MANDIR
+	LIBEXECDIR \
+	LIBDATADIR
 
-BINDIR ?=	${LOCALBASE}/bin
-INCDIR ?=	${LOCALBASE}/include
-LIBDIR ?=	${LOCALBASE}/lib
-MANDIR ?=	${LOCALBASE}/share/man
+BINDIR ?=	${EXECBASE}/bin
+SBINDIR ?=	${EXECBASE}/sbin
+LIBDIR ?=	${EXECBASE}/lib
+LIBEXECDIR ?=	${EXECBASE}/libexec/${PKGDIRNAME}
+LIBDATADIR ?=	${EXECBASE}/libdata/${PKGDIRNAME}
 
 #
-# LOCALBASE additional directories.
+# FILEBASE.
+# INCDIR and MANDIR are traditional.
 #
 # DOCDIR: misc documentation
 # EXAMPLESDIR: usage examples
-# LIBDATADIR: architecture-specific static data
 # SHAREDIR: generic static data
 #
 
 PREFIXVARS += DOCDIR \
 	EXAMPLESDIR \
-	LIBDATADIR \
+	INCDIR \
+	MANDIR \
 	SHAREDIR
 
-DOCDIR ?=	${LOCALBASE}/share/doc/${PKGDIRNAME}
-EXAMPLESDIR ?=	${LOCALBASE}/share/examples/${PKGDIRNAME}
-LIBDATADIR ?=	${LOCALBASE}/libdata/${PKGDIRNAME}
-SHAREDIR ?=	${LOCALBASE}/share/${PKGDIRNAME}
+DOCDIR ?=	${FILEBASE}/share/doc/${PKGDIRNAME}
+EXAMPLESDIR ?=	${FILEBASE}/share/examples/${PKGDIRNAME}
+INCDIR ?=	${FILEBASE}/include
+MANDIR ?=	${FILEBASE}/share/man
+SHAREDIR ?=	${FILEBASE}/share/${PKGDIRNAME}
 
 #
 # ETCBASE - one configuration file directory.
