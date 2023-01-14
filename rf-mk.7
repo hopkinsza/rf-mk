@@ -293,16 +293,14 @@ CONF.h = yes
 
 \&.include <rf/all.mk>
 .Ed
-.It CONF.sub []
-A list of files to generate by using simple
+.It CONF.sub [yes]
+If yes, look for input files in the source tree named
+.Pa *.in
+.Pq non-recursively .
+For each of these files, use simple
 .Xr sed 1
 text substitution to replace
 ${CONF.vars} variable names with their values.
-For each file
-.Pa f ,
-expect an input file
-.Pa ${f}.in
-to exist.
 In the input file, the variable name must be prefixed by
 .Ql RF_
 to minimize naming collisions.
@@ -315,8 +313,6 @@ You could use the following setup:
 .Pp
 .Pa Makefile :
 .Bd -literal -offset Ds
-CONF.sub = blah.sh
-
 # use all.mk, not just conf.mk,
 # so we get 'clean' target implementation
 \&.include <rf/all.mk>
@@ -337,9 +333,7 @@ It is not hooked into the
 target, but you could build it with
 .Dq make blah.sh .
 .Pp
-Actually, the input filename prefix and suffix can be configured with
-${CONF.sub.file_prefix} and ${CONF.sub.file_suffix},
-and the variable prefix and suffix in the input file can be configured with
+Actually, the variable prefix and suffix in the input file can be configured with
 ${CONF.sub.var_prefix} and ${CONF.sub.var_suffix}.
 .El
 .\"

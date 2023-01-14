@@ -56,16 +56,13 @@ CLEANFILES := ${CLEANFILES} ${CONF.h.file}
 #### CONF.sub
 ####
 
-CONF.sub ?=
+CONF.sub ?= yes
 CONF.sub.vars ?= ${CONF.vars}
 
 CONF.sub.var_prefix ?= RF_
 CONF.sub.var_suffix ?=
 
-CONF.sub.file_prefix ?=
-CONF.sub.file_suffix ?= .in
-
-.if !empty(CONF.sub)
+.if ${CONF.sub} == yes
 
 # generate the simple sed command
 CONF.sub.sedcmd = sed
@@ -73,7 +70,14 @@ CONF.sub.sedcmd = sed
 CONF.sub.sedcmd += -e 's,${CONF.sub.var_prefix}$i${CONF.sub.var_suffix},${$i},g'
 .  endfor
 
-.  for f in ${CONF.sub}
+# grab list of *.in files; full paths
+i != ls ${.CURDIR}/*.in 2>/dev/null || true
+.  if !empty(i:M*.in.in)
+.    error a file has double .in suffix
+.  endif
+
+# now loop through each output file as $f ('.in' suffix stripped)
+.  for f in ${i:T:C/.in$//}
 
 # Due to the possibility of accidentally cleaning a non-generated file,
 # we set the permissions of these generated files to 444.
@@ -88,7 +92,7 @@ y != ls -l '$f' | cut -d' ' -f1
 .      endif
 .    endif
 
-$f: ${CONF.sub.file_prefix}$f${CONF.sub.file_suffix}
+$f: $f.in
 	@${RFPRINT.tg.create}
 	@rm -f ${.TARGET}
 	@${CONF.sub.sedcmd} ${.ALLSRC} >${.TARGET}
