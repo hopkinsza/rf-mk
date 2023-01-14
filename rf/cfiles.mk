@@ -6,12 +6,14 @@ CFILESOWN ?= ${BINOWN}
 CFILESGRP ?= ${BINGRP}
 CFILESMODE ?= ${EDITMODE}
 
+.if defined(CFILESDIR)
+.  error CFILESDIR is defined, but doesn't do anything; see CFILESSUBDIR
+.endif
+CFILESSUBDIR ?=
+
 CFILESBUILD ?= no
 
 RFCFILES.exampleinstall ?= yes
-
-RFCFILES.examplesdir ?= ${EXAMPLESDIR}
-RFCFILES.etcdir ?= ${ETCDIR}
 
 #
 # Hook into targets from <rf/init/targ.mk>.
@@ -57,7 +59,11 @@ CLEANFILES := ${CLEANFILES} $f
 
 .  if ${RFCFILES.exampleinstall} == yes
 
-_DIR := ${DESTDIR}${RFCFILES.examplesdir}
+.    if !empty(CFILESSUBDIR)
+_DIR := ${DESTDIR}${EXAMPLESDIR}/${CFILESSUBDIR}
+.    else
+_DIR := ${DESTDIR}${EXAMPLESDIR}
+.    endif
 _NAME := ${CFILESNAME.$f:U${CFILESNAME:U${f:T}}}
 _PATH := ${_DIR}/${_NAME}
 
@@ -79,7 +85,11 @@ ${_PATH}: $f
 # configinstall
 #
 
-_DIR := ${DESTDIR}${RFCFILES.etcdir}
+.    if !empty(CFILESSUBDIR)
+_DIR := ${DESTDIR}${ETCDIR}/${CFILESSUBDIR}
+.    else
+_DIR := ${DESTDIR}${ETCDIR}
+.    endif
 _NAME := ${CFILESNAME.$f:U${CFILESNAME:U${f:T}}}
 _PATH := ${_DIR}/${_NAME}
 

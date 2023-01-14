@@ -212,7 +212,15 @@ files except those that would cause conflicts with each other.
 Like
 .In rf/files.mk
 but for config files.
-You cannot install to a specific directory.
+It is less flexible, but specialized for this common case.
+The files are installed to ${EXAMPLESDIR} during the
+.Ql install
+target.
+You must use the
+.Ql configinstall
+target to install them to ${ETCDIR}.
+These directories are not configurable,
+but you can specify a subdir with ${CFILESSUBDIR}.
 .Ss Targets
 .Bl -tag -width Ds
 .It configall
@@ -220,12 +228,12 @@ Build the configs.
 .It configinstall
 Install the configs to ${ETCDIR}.
 This is not hooked into the main
-.Ql all
+.Ql install
 target.
 .It configexampleinstall
 Install the configs to ${EXAMPLESDIR}.
 This is hooked into the
-.Ql all
+.Ql install
 target.
 .El
 .Ss Variables
@@ -234,7 +242,7 @@ target.
 Same as the corresponding variables in
 .In rf/files.mk .
 .It RFCFILES.exampleinstall [yes]
-If yes, install the config files to ${EXAMPLESDIR}.
+Controls whether to install the config files to ${EXAMPLESDIR}.
 .El
 .\"
 .\"
