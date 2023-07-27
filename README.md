@@ -20,12 +20,22 @@ to build my projects with minimal fuss.
 Note that all examples use the command `make`;
 you may need to substitute this for `bmake` depending on your setup.
 
+Installation
+------------
+
+You can use the include files as-is with `make`'s `-m` option
+or the environment variable `MAKESYSPATH`.
+
+Alternatively, install them to `/usr/share/mk` by running `./install.sh` as root.
+To preview the commands that would be run, use `./install.sh -n`.
+
+The man page `./rf-mk.7` has in-depth documentation.
+You can view it with `man ./rf-mk.7`.
+
 Basic Usage
 -----
 
-See `examples/prog/simple/`.
-
-It simply has the following `Makefile`:
+You can start with one file, `main.c`, and the following `Makefile`:
 
 ```make
 PROG = main
@@ -47,17 +57,13 @@ You could also just define `MAN` to be empty, e.g. `MAN =`,
 but defining `NOMAN` is traditional.
 Harassing you for not having a man page has been a feature since `4.4BSD`!
 
-More Sources
-------------
+To add more sources, use the `SRCS` variable.
+See `examples/basic/`.
 
-See `examples/prog/multisrc/`.
+Compilation
+-----------
 
-The variable `SRCS` was used to override the default of `main.c`.
-
-Theory
-------
-
-To understand the next sections, it is best to understand some compilation basics.
+Before continuing, it is best to understand some compilation basics.
 
 Getting to an executable C program from the source `.c` files
 is performed in multiple steps:
@@ -86,7 +92,7 @@ into `CFLAGS` or similar often still works).
 Multiple Programs
 -----------------
 
-See `examples/progs/simple/`.
+See `examples/multiprog/`.
 
 If you want to link up multiple programs,
 simply use the variable `PROGS` instead of `PROG`,
@@ -140,7 +146,7 @@ NOMAN =
 Compilation/Linking Flags
 -------------------------
 
-See `examples/prog/curses/`.
+See `examples/curses/`.
 To build, you will need development files for a `curses` library implementation,
 e.g. package `libncurses-dev` on debian.
 
@@ -220,15 +226,3 @@ and specifying it on the command line,
 you can put variable assignments in `Makefile.local`,
 which is included by `rf/init.mk`.
 You must still run `make clean` after any changes though!
-
-Installation
-------------
-
-You can use the include files as-is with `make`'s `-m` option
-or the environment variable `MAKESYSPATH`.
-
-Alternatively, install them to `/usr/share/mk` by running `./install.sh` as root.
-To preview the commands that would be run, use `./install.sh -n`.
-
-The man page `./rf-mk.7` has in-depth documentation.
-You can view it with `man ./rf-mk.7`.
